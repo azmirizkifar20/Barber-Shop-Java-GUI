@@ -4,13 +4,16 @@ import model.Connection;
 import controller.ControllerAdmin;
 import controller.TableControl;
 import java.awt.Color;
+import java.awt.print.PrinterException;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.text.MessageFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
+import javax.swing.JTable;
 import model.Session;
 
 public class AdminPage extends javax.swing.JFrame {
@@ -92,6 +95,7 @@ public class AdminPage extends javax.swing.JFrame {
         jLabel37 = new javax.swing.JLabel();
         jLabel39 = new javax.swing.JLabel();
         jLabel40 = new javax.swing.JLabel();
+        btnPrint = new javax.swing.JButton();
         registerPanel = new javax.swing.JPanel();
         jPanel2 = new javax.swing.JPanel();
         jLabel3 = new javax.swing.JLabel();
@@ -399,6 +403,13 @@ public class AdminPage extends javax.swing.JFrame {
                 .addGap(29, 29, 29))
         );
 
+        btnPrint.setText("Print");
+        btnPrint.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnPrintActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout transactionHistoryLayout = new javax.swing.GroupLayout(transactionHistory);
         transactionHistory.setLayout(transactionHistoryLayout);
         transactionHistoryLayout.setHorizontalGroup(
@@ -422,6 +433,10 @@ public class AdminPage extends javax.swing.JFrame {
                             .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jPanel1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addGap(56, 56, 56))))
+            .addGroup(transactionHistoryLayout.createSequentialGroup()
+                .addGap(373, 373, 373)
+                .addComponent(btnPrint, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         transactionHistoryLayout.setVerticalGroup(
             transactionHistoryLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -438,7 +453,9 @@ public class AdminPage extends javax.swing.JFrame {
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 261, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(102, Short.MAX_VALUE))
+                .addGap(28, 28, 28)
+                .addComponent(btnPrint, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(32, Short.MAX_VALUE))
         );
 
         mainPanel.add(transactionHistory, "card3");
@@ -1449,7 +1466,17 @@ public class AdminPage extends javax.swing.JFrame {
         tc.showMemberData(MemberId, tfIdMember, tfNamaMember, tfTanggalLahir, tfEmailMember, taAlamat, tfNoTelp);
     }//GEN-LAST:event_jtMemberMouseClicked
 
-    
+    private void btnPrintActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPrintActionPerformed
+        // TODO add your handling code here:
+        String judul = "Data Transaksi BarberShop";
+        MessageFormat header = new MessageFormat(judul);
+        try {
+            jtTransaction.print(JTable.PrintMode.FIT_WIDTH, header, null);
+        } catch (PrinterException ex) {
+            Logger.getLogger(AdminPage.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_btnPrintActionPerformed
+
     public static void main(String args[]) {
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
         /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
@@ -1490,6 +1517,7 @@ public class AdminPage extends javax.swing.JFrame {
     private javax.swing.JButton btnMember;
     private javax.swing.JButton btnMenuRegister;
     private javax.swing.JButton btnMenuUsers;
+    private javax.swing.JButton btnPrint;
     private javax.swing.JButton btnRegister;
     private javax.swing.JButton btnSalary;
     private javax.swing.JComboBox cbCategoryUser;
