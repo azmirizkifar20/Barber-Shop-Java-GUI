@@ -11,12 +11,8 @@ import model.FunctionLibrary;
 import view.AdminPage;
 import view.BarberPage;
 
-/**
- *
- * @author user
- */
 public class ControllerAdmin {
-    public void salaryInfoBarber(String usernameBarber, javax.swing.JLabel jlSalary) {
+    public int salaryInfoBarber(String usernameBarber) {
         int salary = 0;
         String query = "SELECT SUM(total_harga) FROM transaksi WHERE username_barber = ?";
         try {
@@ -26,16 +22,16 @@ public class ControllerAdmin {
             
             if (rs.next()) {
                 int total = rs.getInt(1);
-                salary = (total * 30) / 100;
+                salary = (total * 45) / 100;
             }
             
-            jlSalary.setText(String.valueOf(salary));
         } catch (SQLException ex) {
             Logger.getLogger(BarberPage.class.getName()).log(Level.SEVERE, null, ex);
         }
+        return salary;
     }
     
-    public void salaryInfoCashier(String usernameCashier, javax.swing.JLabel jlSalary) {
+    public int salaryInfoCashier(String usernameCashier) {
         int salary = 0;
         String query = "SELECT SUM(total_harga) FROM transaksi WHERE username_cashier = ?";
         try {
@@ -45,13 +41,13 @@ public class ControllerAdmin {
             
             if (rs.next()) {
                 int total = rs.getInt(1);
-                salary = (total * 20) / 100;
+                salary = (total * 25) / 100;
             }
             
-            jlSalary.setText(String.valueOf(salary));
         } catch (SQLException ex) {
             Logger.getLogger(BarberPage.class.getName()).log(Level.SEVERE, null, ex);
         }
+        return salary;
     }
     
     public void totalDataInputInfoBarber(String usernameBarber, javax.swing.JLabel jlDataInput) {

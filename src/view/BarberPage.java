@@ -74,6 +74,10 @@ public class BarberPage extends javax.swing.JFrame {
         jlDataInput = new javax.swing.JLabel();
         jLabel35 = new javax.swing.JLabel();
         jLabel38 = new javax.swing.JLabel();
+        cbYear = new javax.swing.JComboBox();
+        cbMonth = new javax.swing.JComboBox();
+        jLabel36 = new javax.swing.JLabel();
+        tfSalaryFiltered = new javax.swing.JTextField();
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -227,7 +231,7 @@ public class BarberPage extends javax.swing.JFrame {
             .addGroup(transactionHistoryLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(transactionHistoryLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 642, Short.MAX_VALUE)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 684, Short.MAX_VALUE)
                     .addGroup(transactionHistoryLayout.createSequentialGroup()
                         .addComponent(jLabel12)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -250,7 +254,7 @@ public class BarberPage extends javax.swing.JFrame {
                         .addComponent(jLabel12)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 331, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(20, Short.MAX_VALUE))
+                .addContainerGap(49, Short.MAX_VALUE))
         );
 
         mainPanel.add(transactionHistory, "card3");
@@ -337,6 +341,29 @@ public class BarberPage extends javax.swing.JFrame {
         jLabel38.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jLabel38.setText("Total Data");
 
+        cbYear.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "2019", "2020", "2021", "2022", "2023" }));
+        cbYear.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cbYearActionPerformed(evt);
+            }
+        });
+
+        cbMonth.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "All Month", "Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember" }));
+        cbMonth.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cbMonthActionPerformed(evt);
+            }
+        });
+
+        jLabel36.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
+        jLabel36.setText("Total");
+
+        tfSalaryFiltered.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                tfSalaryFilteredActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout BarberInfoLayout = new javax.swing.GroupLayout(BarberInfo);
         BarberInfo.setLayout(BarberInfoLayout);
         BarberInfoLayout.setHorizontalGroup(
@@ -390,14 +417,23 @@ public class BarberPage extends javax.swing.JFrame {
                                         .addComponent(jLabel35)
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                         .addComponent(jlDataInput))))
-                            .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 511, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(BarberInfoLayout.createSequentialGroup()
                                 .addGap(155, 155, 155)
-                                .addComponent(jLabel29))))
+                                .addComponent(jLabel29))
+                            .addGroup(BarberInfoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                .addGroup(javax.swing.GroupLayout.Alignment.LEADING, BarberInfoLayout.createSequentialGroup()
+                                    .addComponent(cbYear, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                    .addComponent(cbMonth, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(jLabel36)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                    .addComponent(tfSalaryFiltered, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addComponent(jScrollPane3, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 511, javax.swing.GroupLayout.PREFERRED_SIZE))))
                     .addGroup(BarberInfoLayout.createSequentialGroup()
                         .addGap(217, 217, 217)
                         .addComponent(jLabel19)))
-                .addContainerGap(84, Short.MAX_VALUE))
+                .addContainerGap(118, Short.MAX_VALUE))
         );
         BarberInfoLayout.setVerticalGroup(
             BarberInfoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -442,11 +478,17 @@ public class BarberPage extends javax.swing.JFrame {
                             .addComponent(jLabel35)
                             .addComponent(jlDataInput))
                         .addComponent(jLabel38)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 30, Short.MAX_VALUE)
+                .addGap(18, 18, 18)
                 .addComponent(jLabel29)
                 .addGap(18, 18, 18)
                 .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(26, 26, 26))
+                .addGap(16, 16, 16)
+                .addGroup(BarberInfoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(cbYear, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(cbMonth, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel36, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(tfSalaryFiltered, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(9, Short.MAX_VALUE))
         );
 
         mainPanel.add(BarberInfo, "card5");
@@ -538,13 +580,37 @@ public class BarberPage extends javax.swing.JFrame {
         mainPanel.repaint();
         mainPanel.revalidate();
         
-        // get fungsi
+        // menampilkan info barber
         cb.memberInfo(tfUsernameSession.getText(), jLBarberName, jlBarberAddress, jlBarberGender, jlIdentificationId);
-        cb.salaryInfo(tfUsernameSession.getText(), jlSalary);
+        int totalSalary = cb.salaryInfo(tfUsernameSession.getText());
+        jlSalary.setText(String.valueOf(totalSalary));
         cb.totalDataInputInfo(tfUsernameSession.getText(), jlDataInput);
+        
         tc.loadBarberTransaction(tfUsernameSession.getText());
-        tc.showDataSalary(tc.getModelBarber(), tc.getModelMember(), tc.getDaftarTransaksiBarber(), tc.getDaftarTransaksiMember());
+        tc.showDataSalaryBarber(tc.getModelBarber(), tc.getModelMember(), tc.getDaftarTransaksiBarber(), tc.getDaftarTransaksiMember());
+        tfSalaryFiltered.setText(String.valueOf(totalSalary));
+        cbMonth.setSelectedIndex(0);
     }//GEN-LAST:event_btnBarberInfoActionPerformed
+
+    private void cbYearActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbYearActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_cbYearActionPerformed
+
+    private void cbMonthActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbMonthActionPerformed
+        // TODO add your handling code here:
+        int indexMonth = cbMonth.getSelectedIndex();
+        int totalSalary = 0;
+        String month = String.valueOf(indexMonth);
+        String year = cbYear.getSelectedItem().toString();
+        
+        tc.loadBarberTransaction(tfUsernameSession.getText());
+        totalSalary = tc.showDataSalaryBarberMonth(year, month);
+        tfSalaryFiltered.setText(String.valueOf(totalSalary));
+    }//GEN-LAST:event_cbMonthActionPerformed
+
+    private void tfSalaryFilteredActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tfSalaryFilteredActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_tfSalaryFilteredActionPerformed
 
     public static void main(String args[]) {
 
@@ -563,6 +629,8 @@ public class BarberPage extends javax.swing.JFrame {
     private javax.swing.JButton btnCari;
     private javax.swing.JButton btnHistory;
     private javax.swing.JPanel btnLogout;
+    private javax.swing.JComboBox cbMonth;
+    private javax.swing.JComboBox cbYear;
     private javax.swing.JLabel jLBarberName;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel11;
@@ -582,6 +650,7 @@ public class BarberPage extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel33;
     private javax.swing.JLabel jLabel34;
     private javax.swing.JLabel jLabel35;
+    private javax.swing.JLabel jLabel36;
     private javax.swing.JLabel jLabel38;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
@@ -596,6 +665,7 @@ public class BarberPage extends javax.swing.JFrame {
     private javax.swing.JPanel mainPanel;
     private javax.swing.JPanel menuPanel;
     private javax.swing.JTextField tfCari;
+    private javax.swing.JTextField tfSalaryFiltered;
     private javax.swing.JLabel tfUsernameSession;
     private javax.swing.JPanel transactionHistory;
     // End of variables declaration//GEN-END:variables

@@ -42,7 +42,7 @@ public class ControllerBarber {
         }
     }
     
-    public void salaryInfo(String usernameBarber, javax.swing.JLabel jlSalary) {
+    public int salaryInfo(String usernameBarber) {
         int salary = 0;
         String query = "SELECT SUM(total_harga) FROM transaksi WHERE username_barber = ?";
         try {
@@ -52,13 +52,14 @@ public class ControllerBarber {
             
             if (rs.next()) {
                 int total = rs.getInt(1);
-                salary = (total * 30) / 100;
+                salary = (total * 45) / 100;
             }
             
-            jlSalary.setText(String.valueOf(salary));
+//            jlSalary.setText(String.valueOf(salary));
         } catch (SQLException ex) {
             Logger.getLogger(BarberPage.class.getName()).log(Level.SEVERE, null, ex);
         }
+        return salary;
     }
     
     public void totalDataInputInfo(String usernameBarber, javax.swing.JLabel jlDataInput) {

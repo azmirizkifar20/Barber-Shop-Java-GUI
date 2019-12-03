@@ -6,6 +6,8 @@ import controller.TableControl;
 import java.awt.Color;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
@@ -14,6 +16,8 @@ import model.Session;
 public class AdminPage extends javax.swing.JFrame {
     TableControl tc = new TableControl();
     ControllerAdmin ca = new ControllerAdmin();
+    SimpleDateFormat x = new SimpleDateFormat("dd-MM-yyyy");
+    Date ys = new Date();
     
     public AdminPage(Session session) {
         initComponents();
@@ -21,6 +25,7 @@ public class AdminPage extends javax.swing.JFrame {
         
         // loadColumn
         tc.loadColumnUser();
+        tc.loadColumnMember();
         tc.loadKolomGaji(tc.getModelMember());
         tc.loadKolomTransaksiAdmin();
         
@@ -28,13 +33,21 @@ public class AdminPage extends javax.swing.JFrame {
         tc.loadAdminTransaction();
         tc.ShowAdminTransaction();
         tc.styleAdminTable(jtTransaction);
+        tc.styleAdminTable(jtMember);
         
         // all
         jtUsers.setModel(tc.getModelUser());
         jtTransaction.setModel(tc.getModelTransactionAdmin());
         jtMemberSalary.setModel(tc.getModelMember());
+        jtMember.setModel(tc.getModelMemberCukur());
         tfUsernameSession.setText(session.getUsername());
-        showTransactionHistory();
+        
+        showTransactionHistory(cbShowBy.getSelectedItem().toString(),x.format(ys));
+        tfTotalPemasukkan.setText(String.valueOf(tc.getTotal()));
+        tfKeuntungan.setText(String.valueOf((tc.getTotal() * 30) / 100));
+        tfGaji.setText(String.valueOf((tc.getTotal() * 70) / 100));
+        
+        showTransactionHistory(cbShowBy.getSelectedItem().toString(),x.format(ys));
     }
     
     public void resetRegister() {
@@ -62,6 +75,7 @@ public class AdminPage extends javax.swing.JFrame {
         tfUsernameSession = new javax.swing.JLabel();
         btnMenuRegister = new javax.swing.JButton();
         btnMenuUsers = new javax.swing.JButton();
+        btnMember = new javax.swing.JButton();
         mainPanel = new javax.swing.JPanel();
         transactionHistory = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
@@ -69,7 +83,15 @@ public class AdminPage extends javax.swing.JFrame {
         tfCari = new javax.swing.JTextField();
         btnCari = new javax.swing.JButton();
         jLabel12 = new javax.swing.JLabel();
+        cbShowBy = new javax.swing.JComboBox();
+        cbMonthAdmin = new javax.swing.JComboBox();
         jPanel1 = new javax.swing.JPanel();
+        tfTotalPemasukkan = new javax.swing.JTextField();
+        tfKeuntungan = new javax.swing.JTextField();
+        tfGaji = new javax.swing.JTextField();
+        jLabel37 = new javax.swing.JLabel();
+        jLabel39 = new javax.swing.JLabel();
+        jLabel40 = new javax.swing.JLabel();
         registerPanel = new javax.swing.JPanel();
         jPanel2 = new javax.swing.JPanel();
         jLabel3 = new javax.swing.JLabel();
@@ -115,7 +137,7 @@ public class AdminPage extends javax.swing.JFrame {
         tfEditUsername = new javax.swing.JTextField();
         btnChangePass = new javax.swing.JButton();
         jLabel22 = new javax.swing.JLabel();
-        memberInfo = new javax.swing.JPanel();
+        employeeInfo = new javax.swing.JPanel();
         jLabel21 = new javax.swing.JLabel();
         jLabel23 = new javax.swing.JLabel();
         jLabel24 = new javax.swing.JLabel();
@@ -143,6 +165,24 @@ public class AdminPage extends javax.swing.JFrame {
         cbMonth = new javax.swing.JComboBox();
         tfSalaryFiltered = new javax.swing.JTextField();
         jLabel36 = new javax.swing.JLabel();
+        memberInfo = new javax.swing.JPanel();
+        jScrollPane6 = new javax.swing.JScrollPane();
+        jtMember = new javax.swing.JTable();
+        jLabel41 = new javax.swing.JLabel();
+        tfIdMember = new javax.swing.JTextField();
+        jLabel42 = new javax.swing.JLabel();
+        tfTanggalLahir = new javax.swing.JTextField();
+        jLabel43 = new javax.swing.JLabel();
+        jScrollPane7 = new javax.swing.JScrollPane();
+        taAlamat = new javax.swing.JTextArea();
+        jLabel44 = new javax.swing.JLabel();
+        tfNamaMember = new javax.swing.JTextField();
+        s = new javax.swing.JLabel();
+        tfNoTelp = new javax.swing.JTextField();
+        tfEmailMember = new javax.swing.JTextField();
+        jLabel45 = new javax.swing.JLabel();
+        jLabel46 = new javax.swing.JLabel();
+        jLabel47 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -204,6 +244,13 @@ public class AdminPage extends javax.swing.JFrame {
             }
         });
 
+        btnMember.setText("Members");
+        btnMember.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnMemberActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout menuPanelLayout = new javax.swing.GroupLayout(menuPanel);
         menuPanel.setLayout(menuPanelLayout);
         menuPanelLayout.setHorizontalGroup(
@@ -219,7 +266,8 @@ public class AdminPage extends javax.swing.JFrame {
                         .addComponent(tfUsernameSession))
                     .addComponent(btnMenuRegister, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(btnLogout, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(btnMenuUsers, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(btnMenuUsers, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(btnMember, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap(21, Short.MAX_VALUE))
         );
         menuPanelLayout.setVerticalGroup(
@@ -237,7 +285,9 @@ public class AdminPage extends javax.swing.JFrame {
                 .addComponent(btnMenuRegister, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(btnMenuUsers, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(63, 63, 63)
+                .addGap(18, 18, 18)
+                .addComponent(btnMember, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(40, 40, 40)
                 .addComponent(btnLogout, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
@@ -288,17 +338,65 @@ public class AdminPage extends javax.swing.JFrame {
         jLabel12.setFont(new java.awt.Font("Verdana", 0, 24)); // NOI18N
         jLabel12.setText("Transaction History");
 
-        jPanel1.setBackground(new java.awt.Color(255, 255, 255));
+        cbShowBy.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "All", "Today", "Month", "Year" }));
+        cbShowBy.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cbShowByActionPerformed(evt);
+            }
+        });
+
+        cbMonthAdmin.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "-- Choose Month --", "Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember" }));
+        cbMonthAdmin.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cbMonthAdminActionPerformed(evt);
+            }
+        });
+
+        jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder("Pendapatan"));
+
+        tfTotalPemasukkan.setEditable(false);
+
+        tfKeuntungan.setEditable(false);
+
+        tfGaji.setEditable(false);
+
+        jLabel37.setText("Total");
+
+        jLabel39.setText("Keuntungan");
+
+        jLabel40.setText("Gaji");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 100, Short.MAX_VALUE)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel37)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(tfTotalPemasukkan, javax.swing.GroupLayout.PREFERRED_SIZE, 173, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 27, Short.MAX_VALUE)
+                .addComponent(jLabel39)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(tfKeuntungan, javax.swing.GroupLayout.PREFERRED_SIZE, 174, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(jLabel40)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(tfGaji, javax.swing.GroupLayout.PREFERRED_SIZE, 174, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 13, Short.MAX_VALUE)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(21, 21, 21)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(tfGaji, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel40, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(tfTotalPemasukkan, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel37, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(tfKeuntungan, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel39, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(29, 29, 29))
         );
 
         javax.swing.GroupLayout transactionHistoryLayout = new javax.swing.GroupLayout(transactionHistory);
@@ -306,39 +404,41 @@ public class AdminPage extends javax.swing.JFrame {
         transactionHistoryLayout.setHorizontalGroup(
             transactionHistoryLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(transactionHistoryLayout.createSequentialGroup()
+                .addGap(0, 69, Short.MAX_VALUE)
                 .addGroup(transactionHistoryLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(transactionHistoryLayout.createSequentialGroup()
-                        .addContainerGap()
-                        .addGroup(transactionHistoryLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 804, Short.MAX_VALUE)
+                        .addComponent(jLabel12)
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, transactionHistoryLayout.createSequentialGroup()
+                        .addGroup(transactionHistoryLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                             .addGroup(transactionHistoryLayout.createSequentialGroup()
-                                .addComponent(jLabel12)
+                                .addComponent(cbShowBy, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(cbMonthAdmin, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addComponent(tfCari, javax.swing.GroupLayout.PREFERRED_SIZE, 169, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(btnCari))))
-                    .addGroup(transactionHistoryLayout.createSequentialGroup()
-                        .addGap(227, 227, 227)
-                        .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 0, Short.MAX_VALUE)))
-                .addContainerGap())
+                                .addComponent(btnCari))
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jPanel1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGap(56, 56, 56))))
         );
         transactionHistoryLayout.setVerticalGroup(
             transactionHistoryLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(transactionHistoryLayout.createSequentialGroup()
-                .addGroup(transactionHistoryLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(transactionHistoryLayout.createSequentialGroup()
-                        .addGap(16, 16, 16)
-                        .addGroup(transactionHistoryLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(btnCari, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(tfCari, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addGroup(transactionHistoryLayout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(jLabel12)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 417, Short.MAX_VALUE)
+                .addContainerGap()
+                .addComponent(jLabel12)
                 .addGap(18, 18, 18)
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(transactionHistoryLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(cbShowBy, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(cbMonthAdmin, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(tfCari, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnCari, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 261, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(102, Short.MAX_VALUE))
         );
 
         mainPanel.add(transactionHistory, "card3");
@@ -391,28 +491,27 @@ public class AdminPage extends javax.swing.JFrame {
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addContainerGap(57, Short.MAX_VALUE)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addComponent(jLabel7)
-                        .addComponent(jLabel8)
-                        .addGroup(jPanel2Layout.createSequentialGroup()
-                            .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(jLabel5)
-                                .addComponent(jLabel6)
-                                .addComponent(jLabel9)
-                                .addComponent(jLabel4)
-                                .addComponent(jLabel10)
-                                .addComponent(jLabel3))
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                            .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                .addComponent(jScrollPane2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 256, Short.MAX_VALUE)
-                                .addComponent(tfUsername, javax.swing.GroupLayout.Alignment.TRAILING)
-                                .addComponent(tfPassword, javax.swing.GroupLayout.Alignment.TRAILING)
-                                .addComponent(tfPasswordConfirm, javax.swing.GroupLayout.Alignment.TRAILING)
-                                .addComponent(tfName, javax.swing.GroupLayout.Alignment.TRAILING)
-                                .addComponent(cbLevel, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(cbGender, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                        .addComponent(btnRegister, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addComponent(tfNik, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 256, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jLabel7)
+                    .addComponent(jLabel8)
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel5)
+                            .addComponent(jLabel6)
+                            .addComponent(jLabel9)
+                            .addComponent(jLabel4)
+                            .addComponent(jLabel10)
+                            .addComponent(jLabel3))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(tfUsername, javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(tfPassword, javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(tfPasswordConfirm, javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(cbLevel, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(cbGender, 0, 312, Short.MAX_VALUE)
+                            .addComponent(tfName)
+                            .addComponent(tfNik)
+                            .addComponent(jScrollPane2)))
+                    .addComponent(btnRegister, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
         jPanel2Layout.setVerticalGroup(
@@ -470,12 +569,13 @@ public class AdminPage extends javax.swing.JFrame {
                         .addGap(143, 143, 143)
                         .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(registerPanelLayout.createSequentialGroup()
-                        .addGap(322, 322, 322)
-                        .addComponent(jLabel14))
-                    .addGroup(registerPanelLayout.createSequentialGroup()
-                        .addGap(253, 253, 253)
-                        .addComponent(jLabel13)))
-                .addContainerGap(268, Short.MAX_VALUE))
+                        .addGap(287, 287, 287)
+                        .addGroup(registerPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(registerPanelLayout.createSequentialGroup()
+                                .addGap(69, 69, 69)
+                                .addComponent(jLabel14))
+                            .addComponent(jLabel13))))
+                .addContainerGap(236, Short.MAX_VALUE))
         );
         registerPanelLayout.setVerticalGroup(
             registerPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -545,6 +645,11 @@ public class AdminPage extends javax.swing.JFrame {
         });
 
         tfEditName.setEditable(false);
+        tfEditName.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                tfEditNameActionPerformed(evt);
+            }
+        });
 
         jLabel16.setText("Name");
 
@@ -598,7 +703,7 @@ public class AdminPage extends javax.swing.JFrame {
                                 .addComponent(tfCariUser, javax.swing.GroupLayout.PREFERRED_SIZE, 247, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(btnCariUser, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addContainerGap(92, Short.MAX_VALUE))
+                        .addContainerGap(134, Short.MAX_VALUE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, listUserPanelLayout.createSequentialGroup()
                         .addGroup(listUserPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addGroup(listUserPanelLayout.createSequentialGroup()
@@ -666,15 +771,15 @@ public class AdminPage extends javax.swing.JFrame {
                 .addGroup(listUserPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnEditData, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnSalary, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(51, Short.MAX_VALUE))
+                .addContainerGap(128, Short.MAX_VALUE))
         );
 
         mainPanel.add(listUserPanel, "card3");
 
-        memberInfo.setBackground(new java.awt.Color(255, 255, 255));
+        employeeInfo.setBackground(new java.awt.Color(255, 255, 255));
 
         jLabel21.setFont(new java.awt.Font("Rockwell", 0, 36)); // NOI18N
-        jLabel21.setText("Member Info");
+        jLabel21.setText("Employee Info");
 
         jLabel23.setText("-------------------------------------------------------------------");
 
@@ -754,8 +859,13 @@ public class AdminPage extends javax.swing.JFrame {
         jLabel38.setText("Total Data");
 
         cbYear.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "2019", "2020", "2021", "2022", "2023" }));
+        cbYear.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cbYearActionPerformed(evt);
+            }
+        });
 
-        cbMonth.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "-- Choose Month --", "Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember" }));
+        cbMonth.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "All Month", "Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember" }));
         cbMonth.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 cbMonthActionPerformed(evt);
@@ -766,114 +876,116 @@ public class AdminPage extends javax.swing.JFrame {
 
         jLabel36.setText("Total");
 
-        javax.swing.GroupLayout memberInfoLayout = new javax.swing.GroupLayout(memberInfo);
-        memberInfo.setLayout(memberInfoLayout);
-        memberInfoLayout.setHorizontalGroup(
-            memberInfoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, memberInfoLayout.createSequentialGroup()
-                .addContainerGap(175, Short.MAX_VALUE)
-                .addGroup(memberInfoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addGroup(memberInfoLayout.createSequentialGroup()
-                        .addGap(109, 109, 109)
-                        .addComponent(jLabel23))
-                    .addGroup(memberInfoLayout.createSequentialGroup()
-                        .addGroup(memberInfoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel25)
-                            .addComponent(jLabel26)
-                            .addComponent(jLabel24))
-                        .addGap(18, 18, 18)
-                        .addGroup(memberInfoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(memberInfoLayout.createSequentialGroup()
-                                .addComponent(jLabel28)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(jlMemberName))
-                            .addGroup(memberInfoLayout.createSequentialGroup()
-                                .addComponent(jLabel29)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(jlMemberAddress))
-                            .addGroup(memberInfoLayout.createSequentialGroup()
-                                .addComponent(jLabel30)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(jlMemberNik)))
-                        .addGap(59, 59, 59)
-                        .addGroup(memberInfoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(memberInfoLayout.createSequentialGroup()
-                                .addGroup(memberInfoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel27)
-                                    .addComponent(jLabel33))
-                                .addGap(10, 10, 10)
-                                .addGroup(memberInfoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(memberInfoLayout.createSequentialGroup()
-                                        .addComponent(jLabel31)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                        .addComponent(jlMemberGender))
-                                    .addGroup(memberInfoLayout.createSequentialGroup()
-                                        .addComponent(jLabel34)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                        .addComponent(jlMemberSalary))))
-                            .addGroup(memberInfoLayout.createSequentialGroup()
-                                .addComponent(jLabel38)
+        javax.swing.GroupLayout employeeInfoLayout = new javax.swing.GroupLayout(employeeInfo);
+        employeeInfo.setLayout(employeeInfoLayout);
+        employeeInfoLayout.setHorizontalGroup(
+            employeeInfoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(employeeInfoLayout.createSequentialGroup()
+                .addContainerGap(217, Short.MAX_VALUE)
+                .addGroup(employeeInfoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, employeeInfoLayout.createSequentialGroup()
+                        .addGroup(employeeInfoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addGroup(employeeInfoLayout.createSequentialGroup()
+                                .addGap(109, 109, 109)
+                                .addComponent(jLabel23))
+                            .addGroup(employeeInfoLayout.createSequentialGroup()
+                                .addGroup(employeeInfoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel25)
+                                    .addComponent(jLabel26)
+                                    .addComponent(jLabel24))
                                 .addGap(18, 18, 18)
-                                .addComponent(jLabel35)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(jlMemberDataInput))))
-                    .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 511, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(memberInfoLayout.createSequentialGroup()
-                        .addGap(155, 155, 155)
-                        .addComponent(jLabel32))
-                    .addGroup(memberInfoLayout.createSequentialGroup()
-                        .addGap(134, 134, 134)
-                        .addComponent(jLabel21))
-                    .addGroup(memberInfoLayout.createSequentialGroup()
-                        .addComponent(cbYear, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(cbMonth, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(83, 83, 83)
-                        .addComponent(jLabel36)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(tfSalaryFiltered)))
-                .addGap(138, 138, 138))
+                                .addGroup(employeeInfoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(employeeInfoLayout.createSequentialGroup()
+                                        .addComponent(jLabel28)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                        .addComponent(jlMemberName))
+                                    .addGroup(employeeInfoLayout.createSequentialGroup()
+                                        .addComponent(jLabel29)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                        .addComponent(jlMemberAddress))
+                                    .addGroup(employeeInfoLayout.createSequentialGroup()
+                                        .addComponent(jLabel30)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                        .addComponent(jlMemberNik)))
+                                .addGap(59, 59, 59)
+                                .addGroup(employeeInfoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(employeeInfoLayout.createSequentialGroup()
+                                        .addGroup(employeeInfoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(jLabel27)
+                                            .addComponent(jLabel33))
+                                        .addGap(10, 10, 10)
+                                        .addGroup(employeeInfoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addGroup(employeeInfoLayout.createSequentialGroup()
+                                                .addComponent(jLabel31)
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                                .addComponent(jlMemberGender))
+                                            .addGroup(employeeInfoLayout.createSequentialGroup()
+                                                .addComponent(jLabel34)
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                                .addComponent(jlMemberSalary))))
+                                    .addGroup(employeeInfoLayout.createSequentialGroup()
+                                        .addComponent(jLabel38)
+                                        .addGap(18, 18, 18)
+                                        .addComponent(jLabel35)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                        .addComponent(jlMemberDataInput))))
+                            .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 511, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(employeeInfoLayout.createSequentialGroup()
+                                .addGap(155, 155, 155)
+                                .addComponent(jLabel32))
+                            .addGroup(employeeInfoLayout.createSequentialGroup()
+                                .addComponent(cbYear, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(cbMonth, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(83, 83, 83)
+                                .addComponent(jLabel36)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(tfSalaryFiltered)))
+                        .addGap(138, 138, 138))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, employeeInfoLayout.createSequentialGroup()
+                        .addComponent(jLabel21)
+                        .addGap(281, 281, 281))))
         );
-        memberInfoLayout.setVerticalGroup(
-            memberInfoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(memberInfoLayout.createSequentialGroup()
+        employeeInfoLayout.setVerticalGroup(
+            employeeInfoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(employeeInfoLayout.createSequentialGroup()
                 .addGap(16, 16, 16)
                 .addComponent(jLabel21)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel23)
                 .addGap(18, 18, 18)
-                .addGroup(memberInfoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(memberInfoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(memberInfoLayout.createSequentialGroup()
-                            .addGroup(memberInfoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addGroup(employeeInfoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(employeeInfoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(employeeInfoLayout.createSequentialGroup()
+                            .addGroup(employeeInfoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                 .addComponent(jLabel24)
                                 .addComponent(jLabel28)
                                 .addComponent(jlMemberName))
                             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                            .addGroup(memberInfoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addGroup(employeeInfoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                 .addComponent(jLabel25)
                                 .addComponent(jLabel29)
                                 .addComponent(jlMemberAddress)))
-                        .addGroup(memberInfoLayout.createSequentialGroup()
+                        .addGroup(employeeInfoLayout.createSequentialGroup()
                             .addComponent(jLabel27)
                             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                             .addComponent(jLabel33)))
-                    .addGroup(memberInfoLayout.createSequentialGroup()
-                        .addGroup(memberInfoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addGroup(employeeInfoLayout.createSequentialGroup()
+                        .addGroup(employeeInfoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel31)
                             .addComponent(jlMemberGender))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(memberInfoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addGroup(employeeInfoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel34)
                             .addComponent(jlMemberSalary))))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(memberInfoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(memberInfoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addGroup(employeeInfoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(employeeInfoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(jLabel26)
                         .addComponent(jLabel30)
                         .addComponent(jlMemberNik))
-                    .addGroup(memberInfoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(memberInfoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addGroup(employeeInfoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(employeeInfoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel35)
                             .addComponent(jlMemberDataInput))
                         .addComponent(jLabel38)))
@@ -882,15 +994,136 @@ public class AdminPage extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(memberInfoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                .addGroup(employeeInfoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(cbYear, javax.swing.GroupLayout.DEFAULT_SIZE, 32, Short.MAX_VALUE)
                     .addComponent(cbMonth)
                     .addComponent(tfSalaryFiltered, javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(jLabel36, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap(65, Short.MAX_VALUE))
+                .addContainerGap(140, Short.MAX_VALUE))
         );
 
-        mainPanel.add(memberInfo, "card5");
+        mainPanel.add(employeeInfo, "card5");
+
+        memberInfo.setBackground(new java.awt.Color(255, 255, 255));
+
+        jtMember.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Title 1", "Title 2", "Title 3", "Title 4"
+            }
+        ));
+        jtMember.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jtMemberMouseClicked(evt);
+            }
+        });
+        jScrollPane6.setViewportView(jtMember);
+
+        jLabel41.setText("ID Member");
+
+        jLabel42.setText("Nama Member");
+
+        jLabel43.setText("Alamat");
+
+        taAlamat.setColumns(20);
+        taAlamat.setRows(5);
+        jScrollPane7.setViewportView(taAlamat);
+
+        jLabel44.setText("Tanggal Lahir");
+
+        s.setText("Tanggal Lahir");
+
+        jLabel45.setText("Email");
+
+        jLabel46.setFont(new java.awt.Font("Rockwell", 0, 36)); // NOI18N
+        jLabel46.setText("Member Info");
+
+        jLabel47.setText("-------------------------------------------------------------------");
+
+        javax.swing.GroupLayout memberInfoLayout = new javax.swing.GroupLayout(memberInfo);
+        memberInfo.setLayout(memberInfoLayout);
+        memberInfoLayout.setHorizontalGroup(
+            memberInfoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(memberInfoLayout.createSequentialGroup()
+                .addGap(42, 42, 42)
+                .addComponent(jScrollPane6, javax.swing.GroupLayout.PREFERRED_SIZE, 324, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(26, 26, 26)
+                .addGroup(memberInfoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(memberInfoLayout.createSequentialGroup()
+                        .addComponent(jLabel45)
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(memberInfoLayout.createSequentialGroup()
+                        .addGroup(memberInfoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addComponent(tfEmailMember, javax.swing.GroupLayout.DEFAULT_SIZE, 191, Short.MAX_VALUE)
+                            .addComponent(jLabel41, javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel42, javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel44, javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(tfIdMember, javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(tfNamaMember, javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(tfTanggalLahir, javax.swing.GroupLayout.Alignment.LEADING))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 36, Short.MAX_VALUE)
+                        .addGroup(memberInfoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(s)
+                            .addGroup(memberInfoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                .addComponent(tfNoTelp, javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(jScrollPane7, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(jLabel43, javax.swing.GroupLayout.Alignment.LEADING)))
+                        .addGap(24, 24, 24))))
+            .addGroup(memberInfoLayout.createSequentialGroup()
+                .addGap(299, 299, 299)
+                .addComponent(jLabel47)
+                .addGap(0, 0, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, memberInfoLayout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jLabel46)
+                .addGap(320, 320, 320))
+        );
+        memberInfoLayout.setVerticalGroup(
+            memberInfoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(memberInfoLayout.createSequentialGroup()
+                .addGap(16, 16, 16)
+                .addComponent(jLabel46)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jLabel47)
+                .addGap(18, 18, 18)
+                .addGroup(memberInfoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(memberInfoLayout.createSequentialGroup()
+                        .addGroup(memberInfoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel41)
+                            .addComponent(jLabel43))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(memberInfoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addGroup(memberInfoLayout.createSequentialGroup()
+                                .addComponent(tfIdMember, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(jLabel42)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(tfNamaMember, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(jScrollPane7, javax.swing.GroupLayout.PREFERRED_SIZE, 108, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(18, 18, 18)
+                        .addGroup(memberInfoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(memberInfoLayout.createSequentialGroup()
+                                .addComponent(jLabel44)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(tfTanggalLahir, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(memberInfoLayout.createSequentialGroup()
+                                .addComponent(s)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(tfNoTelp, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(18, 18, 18)
+                        .addComponent(jLabel45)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(tfEmailMember, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jScrollPane6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(60, Short.MAX_VALUE))
+        );
+
+        mainPanel.add(memberInfo, "card6");
 
         javax.swing.GroupLayout bodyLayout = new javax.swing.GroupLayout(body);
         body.setLayout(bodyLayout);
@@ -923,8 +1156,15 @@ public class AdminPage extends javax.swing.JFrame {
 
     private void btnHistoryActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnHistoryActionPerformed
         // TODO add your handling code here:
-        showTransactionHistory();
+        showTransactionHistory(cbShowBy.getSelectedItem().toString(),x.format(ys));
         tfCari.setText("");
+        if (cbShowBy.getSelectedItem().toString().equals("Month")) {
+            cbMonthAdmin.setEnabled(true);
+        }else{
+            cbMonthAdmin.setEnabled(false);
+        }
+        cbShowBy.setSelectedIndex(0);
+        
     }//GEN-LAST:event_btnHistoryActionPerformed
 
     private void btnLogoutMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnLogoutMouseClicked
@@ -1042,8 +1282,6 @@ public class AdminPage extends javax.swing.JFrame {
                 }
             }
         }
-        
-        
     }//GEN-LAST:event_btnEditDataActionPerformed
 
     private void btnMenuUsersActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMenuUsersActionPerformed
@@ -1074,7 +1312,7 @@ public class AdminPage extends javax.swing.JFrame {
         // TODO add your handling code here:
         int selectedRows = jtUsers.getSelectedRow();
         String nama = tc.getModelUser().getValueAt(selectedRows,0).toString();
-        tc.showUserData(selectedRows, nama, tfEditName, tfEditNIK, tfEditGender, tfEditLevel, taEditAddress, tfEditUsername);
+        tc.showUserData(nama, tfEditName, tfEditNIK, tfEditGender, tfEditLevel, taEditAddress, tfEditUsername);
     }//GEN-LAST:event_jtUsersMouseClicked
 
     private void btnSalaryActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalaryActionPerformed
@@ -1094,15 +1332,19 @@ public class AdminPage extends javax.swing.JFrame {
             
             if (level.equals("Cashier")) {
                 tc.loadCashierTransaction(username);
-                tc.showDataSalary(tc.getModelCashier(), tc.getModelMember(), tc.getDaftarTransaksiCashier(), tc.getDaftarTransaksiMember());
-                ca.salaryInfoCashier(username, jlMemberSalary);
+                tc.showDataSalaryCashier(tc.getModelCashier(), tc.getModelMember(), tc.getDaftarTransaksiCashier(), tc.getDaftarTransaksiMember());
+                int totalSalary = ca.salaryInfoCashier(username);
+                jlMemberSalary.setText(String.valueOf(totalSalary));
                 ca.totalDataInputInfoCashier(username, jlMemberDataInput);
             } else if (level.equals("Barber")) {
                 tc.loadBarberTransaction(username);
-                tc.showDataSalary(tc.getModelBarber(), tc.getModelMember(), tc.getDaftarTransaksiBarber(), tc.getDaftarTransaksiMember());
-                ca.salaryInfoBarber(username, jlMemberSalary);
+                tc.showDataSalaryBarber(tc.getModelBarber(), tc.getModelMember(), tc.getDaftarTransaksiBarber(), tc.getDaftarTransaksiMember());
+                int totalSalary = ca.salaryInfoBarber(username);
+                jlMemberSalary.setText(String.valueOf(totalSalary));
                 ca.totalDataInputInfoBarber(username, jlMemberDataInput);
             }
+            
+            cbMonth.setSelectedIndex(0);
         }
     }//GEN-LAST:event_btnSalaryActionPerformed
 
@@ -1122,6 +1364,7 @@ public class AdminPage extends javax.swing.JFrame {
             totalSalary = tc.showDataSalaryBarberMonth(year, month);
         }
         tfSalaryFiltered.setText(String.valueOf(totalSalary));
+        
     }//GEN-LAST:event_cbMonthActionPerformed
 
     private void btnChangePassActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnChangePassActionPerformed
@@ -1136,8 +1379,78 @@ public class AdminPage extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_btnChangePassActionPerformed
 
+    private void cbYearActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbYearActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_cbYearActionPerformed
+
+    private void cbMonthAdminActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbMonthAdminActionPerformed
+        // TODO add your handling code here:
+        showTransactionHistory(cbShowBy.getSelectedItem().toString(),String.valueOf(cbMonthAdmin.getSelectedIndex()));
+        tfTotalPemasukkan.setText(String.valueOf(tc.getTotal()));
+        tfKeuntungan.setText(String.valueOf((tc.getTotal() * 30) / 100));
+        tfGaji.setText(String.valueOf((tc.getTotal() * 70) / 100));
+    }//GEN-LAST:event_cbMonthAdminActionPerformed
+
+    private void cbShowByActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbShowByActionPerformed
+        // TODO add your handling code here:
+        
+        if (cbShowBy.getSelectedItem().toString().equals("Month")) {
+            cbMonthAdmin.setEnabled(true);
+            if (cbMonthAdmin.getSelectedIndex() != 0) {
+                showTransactionHistory(cbShowBy.getSelectedItem().toString(),String.valueOf(cbMonthAdmin.getSelectedIndex()));
+            }
+        }else if (cbShowBy.getSelectedItem().toString().equals("Today")){
+            cbMonthAdmin.setEnabled(false);
+            showTransactionHistory(cbShowBy.getSelectedItem().toString(),x.format(ys));
+            
+        }else if (cbShowBy.getSelectedItem().toString().equals("Year")){
+            cbMonthAdmin.setEnabled(false);
+            showTransactionHistory(cbShowBy.getSelectedItem().toString(),x.format(ys));
+        }
+        else if (cbShowBy.getSelectedItem().toString().equals("All")){
+            cbMonthAdmin.setEnabled(false);
+            showTransactionHistory(cbShowBy.getSelectedItem().toString(),x.format(ys));
+        }
+        tfTotalPemasukkan.setText(String.valueOf(tc.getTotal()));
+        tfKeuntungan.setText(String.valueOf((tc.getTotal() * 30) / 100));
+        tfGaji.setText(String.valueOf((tc.getTotal() * 70) / 100));
+    }//GEN-LAST:event_cbShowByActionPerformed
+
+    private void btnMemberActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMemberActionPerformed
+        // TODO add your handling code here:
+        mainPanel.removeAll();
+        mainPanel.repaint();
+        mainPanel.revalidate();
+
+        // tampilkan panel yg mau diisi
+        mainPanel.add(memberInfo);
+        mainPanel.repaint();
+        mainPanel.revalidate();
+        
+        tc.loadMember();
+        tc.ShowMember();
+        
+        tfIdMember.setText("");
+        tfNamaMember.setText("");
+        tfTanggalLahir.setText("");
+        tfEmailMember.setText("");
+        taAlamat.setText("");
+        tfNoTelp.setText("");
+    }//GEN-LAST:event_btnMemberActionPerformed
+
+    private void tfEditNameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tfEditNameActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_tfEditNameActionPerformed
+
+    private void jtMemberMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jtMemberMouseClicked
+        // TODO add your handling code here:
+        int selectedRows = jtMember.getSelectedRow();
+        String MemberId = tc.getModelMemberCukur().getValueAt(selectedRows,0).toString();
+        tc.showMemberData(MemberId, tfIdMember, tfNamaMember, tfTanggalLahir, tfEmailMember, taAlamat, tfNoTelp);
+    }//GEN-LAST:event_jtMemberMouseClicked
+
+    
     public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
         /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
          * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
@@ -1160,7 +1473,6 @@ public class AdminPage extends javax.swing.JFrame {
         }
         //</editor-fold>
 
-        /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
             }
@@ -1175,6 +1487,7 @@ public class AdminPage extends javax.swing.JFrame {
     private javax.swing.JButton btnEditData;
     private javax.swing.JButton btnHistory;
     private javax.swing.JPanel btnLogout;
+    private javax.swing.JButton btnMember;
     private javax.swing.JButton btnMenuRegister;
     private javax.swing.JButton btnMenuUsers;
     private javax.swing.JButton btnRegister;
@@ -1183,7 +1496,10 @@ public class AdminPage extends javax.swing.JFrame {
     private javax.swing.JComboBox cbGender;
     private javax.swing.JComboBox cbLevel;
     private javax.swing.JComboBox cbMonth;
+    private javax.swing.JComboBox cbMonthAdmin;
+    private javax.swing.JComboBox cbShowBy;
     private javax.swing.JComboBox cbYear;
+    private javax.swing.JPanel employeeInfo;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
@@ -1214,8 +1530,18 @@ public class AdminPage extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel34;
     private javax.swing.JLabel jLabel35;
     private javax.swing.JLabel jLabel36;
+    private javax.swing.JLabel jLabel37;
     private javax.swing.JLabel jLabel38;
+    private javax.swing.JLabel jLabel39;
     private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel40;
+    private javax.swing.JLabel jLabel41;
+    private javax.swing.JLabel jLabel42;
+    private javax.swing.JLabel jLabel43;
+    private javax.swing.JLabel jLabel44;
+    private javax.swing.JLabel jLabel45;
+    private javax.swing.JLabel jLabel46;
+    private javax.swing.JLabel jLabel47;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
@@ -1228,12 +1554,15 @@ public class AdminPage extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JScrollPane jScrollPane5;
+    private javax.swing.JScrollPane jScrollPane6;
+    private javax.swing.JScrollPane jScrollPane7;
     private javax.swing.JLabel jlMemberAddress;
     private javax.swing.JLabel jlMemberDataInput;
     private javax.swing.JLabel jlMemberGender;
     private javax.swing.JLabel jlMemberName;
     private javax.swing.JLabel jlMemberNik;
     private javax.swing.JLabel jlMemberSalary;
+    private javax.swing.JTable jtMember;
     private javax.swing.JTable jtMemberSalary;
     private javax.swing.JTable jtTransaction;
     private javax.swing.JTable jtUsers;
@@ -1242,6 +1571,8 @@ public class AdminPage extends javax.swing.JFrame {
     private javax.swing.JPanel memberInfo;
     private javax.swing.JPanel menuPanel;
     private javax.swing.JPanel registerPanel;
+    private javax.swing.JLabel s;
+    private javax.swing.JTextArea taAlamat;
     private javax.swing.JTextArea taEditAddress;
     private javax.swing.JTextArea tfAddress;
     private javax.swing.JTextField tfCari;
@@ -1251,17 +1582,25 @@ public class AdminPage extends javax.swing.JFrame {
     private javax.swing.JTextField tfEditNIK;
     private javax.swing.JTextField tfEditName;
     private javax.swing.JTextField tfEditUsername;
+    private javax.swing.JTextField tfEmailMember;
+    private javax.swing.JTextField tfGaji;
+    private javax.swing.JTextField tfIdMember;
+    private javax.swing.JTextField tfKeuntungan;
+    private javax.swing.JTextField tfNamaMember;
     private javax.swing.JTextField tfName;
     private javax.swing.JTextField tfNik;
+    private javax.swing.JTextField tfNoTelp;
     private javax.swing.JPasswordField tfPassword;
     private javax.swing.JPasswordField tfPasswordConfirm;
     private javax.swing.JTextField tfSalaryFiltered;
+    private javax.swing.JTextField tfTanggalLahir;
+    private javax.swing.JTextField tfTotalPemasukkan;
     private javax.swing.JTextField tfUsername;
     private javax.swing.JLabel tfUsernameSession;
     private javax.swing.JPanel transactionHistory;
     // End of variables declaration//GEN-END:variables
 
-    private void showTransactionHistory() {
+     private void showTransactionHistory(String category, String date) {
         // hapus
         mainPanel.removeAll();
         mainPanel.repaint();
@@ -1272,7 +1611,7 @@ public class AdminPage extends javax.swing.JFrame {
         mainPanel.repaint();
         mainPanel.revalidate();
         tc.loadAdminTransaction();
-        tc.ShowAdminTransaction();
+        tc.ShowAdminTransactionBy(category,date);
     }
     private void showUsersData(){
         mainPanel.removeAll();
@@ -1291,7 +1630,7 @@ public class AdminPage extends javax.swing.JFrame {
         mainPanel.revalidate();
 
         // tampilkan panel yg mau diisi
-        mainPanel.add(memberInfo);
+        mainPanel.add(employeeInfo);
         mainPanel.repaint();
         mainPanel.revalidate();
     }

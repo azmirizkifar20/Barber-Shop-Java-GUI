@@ -12,6 +12,8 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.table.DefaultTableModel;
 import model.FunctionLibrary;
+import model.Member;
+import model.Profit;
 import model.Users;
 import view.AdminPage;
 import view.BarberPage;
@@ -25,11 +27,14 @@ public class TableControl {
     DefaultTableModel modelMember = new DefaultTableModel();
     DefaultTableModel modelTransactionAdmin = new DefaultTableModel();
     DefaultTableModel modelUser = new DefaultTableModel();
+    DefaultTableModel modelMemberCukur = new DefaultTableModel();
     
     ArrayList<Transaction> daftarTransaksiBarber;
     ArrayList<Transaction> daftarTransaksiCashier;
     ArrayList<Transaction> daftarTransaksiMember;
     ArrayList<Transaction> daftarTransaksiAdmin;
+    ArrayList<Profit> daftarProfit;
+    ArrayList<Member> daftarMember;
     ArrayList<Users> daftarUsers;
 
     public DefaultTableModel getModelTransaksiBarber() {
@@ -58,6 +63,10 @@ public class TableControl {
 
     public DefaultTableModel getModelUser() {
         return modelUser;
+    }
+
+    public DefaultTableModel getModelMemberCukur() {
+        return modelMemberCukur;
     }
 
     public ArrayList<Transaction> getDaftarTransaksiBarber() {
@@ -147,10 +156,15 @@ public class TableControl {
     }
     
     public void loadColumnUser(){
-        modelUser.addColumn("NAME");
+        modelUser.addColumn("Name");
     }
     
-    public void showDataSalary(DefaultTableModel model, DefaultTableModel model2, ArrayList<Transaction> arrTransaksi, ArrayList<Transaction> arrTransaksi2) {
+    public void loadColumnMember() {
+        modelMemberCukur.addColumn("ID Member");
+        modelMemberCukur.addColumn("Member Name");
+    }
+    
+    public void showDataSalaryCashier(DefaultTableModel model, DefaultTableModel model2, ArrayList<Transaction> arrTransaksi, ArrayList<Transaction> arrTransaksi2) {
         model.setRowCount(0);
         model2.setRowCount(0);
         int no = 1;
@@ -158,13 +172,33 @@ public class TableControl {
         int salary, total = 0;
         for (Transaction data : arrTransaksi) {
             total = data.getTotal();
-            salary = (total * 30) / 100;
+            salary = (total * 25) / 100;
             model.addRow(new Object[]{no, data.getTanggal(), data.getTotal(), salary});
             no++;
         }
         for (Transaction data : arrTransaksi2) {
             total = data.getTotal();
-            salary = (total * 30) / 100;
+            salary = (total * 25) / 100;
+            model2.addRow(new Object[]{no2, data.getTanggal(), data.getTotal(), salary});
+            no2++;
+        }
+    }
+    
+    public void showDataSalaryBarber(DefaultTableModel model, DefaultTableModel model2, ArrayList<Transaction> arrTransaksi, ArrayList<Transaction> arrTransaksi2) {
+        model.setRowCount(0);
+        model2.setRowCount(0);
+        int no = 1;
+        int no2 = 1;
+        int salary, total = 0;
+        for (Transaction data : arrTransaksi) {
+            total = data.getTotal();
+            salary = (total * 45) / 100;
+            model.addRow(new Object[]{no, data.getTanggal(), data.getTotal(), salary});
+            no++;
+        }
+        for (Transaction data : arrTransaksi2) {
+            total = data.getTotal();
+            salary = (total * 45) / 100;
             model2.addRow(new Object[]{no2, data.getTanggal(), data.getTotal(), salary});
             no2++;
         }
@@ -172,6 +206,7 @@ public class TableControl {
     
     public int showDataSalaryCashierMonth(String year, String month) {
         modelMember.setRowCount(0);
+        modelCashier.setRowCount(0);
         int no2 = 1;
         int salary = 0; 
         int total = 0;
@@ -179,10 +214,20 @@ public class TableControl {
         FunctionLibrary fl = new FunctionLibrary();
         
         for (Transaction data : daftarTransaksiMember) {
-            if (fl.splitMonth(data.getTanggal()).equals(month) && fl.splitYear(data.getTanggal()).equals(year)) {
+            if (Integer.parseInt(month) > 0) {
+                if (fl.splitMonth(data.getTanggal()).equals(month) && fl.splitYear(data.getTanggal()).equals(year)) {
+                    total = data.getTotal();
+                    salary = (total * 25) / 100;
+                    modelMember.addRow(new Object[]{no2, data.getTanggal(), data.getTotal(), salary});
+                    modelCashier.addRow(new Object[]{no2, data.getTanggal(), data.getTotal(), salary});
+                    no2++;
+                    salaryTotal += salary;
+                }
+            } else {
                 total = data.getTotal();
-                salary = (total * 20) / 100;
+                salary = (total * 25) / 100;
                 modelMember.addRow(new Object[]{no2, data.getTanggal(), data.getTotal(), salary});
+                modelCashier.addRow(new Object[]{no2, data.getTanggal(), data.getTotal(), salary});
                 no2++;
                 salaryTotal += salary;
             }
@@ -192,18 +237,29 @@ public class TableControl {
     
     public int showDataSalaryBarberMonth(String year, String month) {
         modelMember.setRowCount(0);
-        int no2 = 1;
+        modelBarber.setRowCount(0);
+        int no = 1;
         int salary = 0; 
         int total = 0;
         int salaryTotal = 0;
         FunctionLibrary fl = new FunctionLibrary();
         
         for (Transaction data : daftarTransaksiMember) {
-            if (fl.splitMonth(data.getTanggal()).equals(month) && fl.splitYear(data.getTanggal()).equals(year)) {
+            if (Integer.parseInt(month) > 0) {
+                if (fl.splitMonth(data.getTanggal()).equals(month) && fl.splitYear(data.getTanggal()).equals(year)) {
+                    total = data.getTotal();
+                    salary = (total * 45) / 100;
+                    modelMember.addRow(new Object[]{no, data.getTanggal(), data.getTotal(), salary});
+                    modelBarber.addRow(new Object[]{no, data.getTanggal(), data.getTotal(), salary});
+                    no++;
+                    salaryTotal += salary;
+                }
+            } else {
                 total = data.getTotal();
-                salary = (total * 30) / 100;
-                modelMember.addRow(new Object[]{no2, data.getTanggal(), data.getTotal(), salary});
-                no2++;
+                salary = (total * 45) / 100;
+                modelMember.addRow(new Object[]{no, data.getTanggal(), data.getTotal(), salary});
+                modelBarber.addRow(new Object[]{no, data.getTanggal(), data.getTotal(), salary});
+                no++;
                 salaryTotal += salary;
             }
         }
@@ -245,7 +301,16 @@ public class TableControl {
         }
     }
     
-    public void showUserData(int selectedRows, String nama, javax.swing.JTextField tfEditName, javax.swing.JTextField tfEditNIK, javax.swing.JTextField tfEditGender, javax.swing.JTextField tfEditLevel, javax.swing.JTextArea taEditAddress, javax.swing.JTextField tfEditUsername) {
+    public void ShowMember() {
+        modelMemberCukur.setRowCount(0);
+        for (Member data : daftarMember) {
+            if (!data.getId_member().equals("-")) {
+                modelMemberCukur.addRow(new Object[]{data.getId_member(), data.getNama_member()});
+            }
+        }
+    }
+    
+    public void showUserData(String nama, javax.swing.JTextField tfEditName, javax.swing.JTextField tfEditNIK, javax.swing.JTextField tfEditGender, javax.swing.JTextField tfEditLevel, javax.swing.JTextArea taEditAddress, javax.swing.JTextField tfEditUsername) {
         FunctionLibrary fl = new FunctionLibrary();
         for (Users data : daftarUsers) {
             if (nama.equals(data.getNama())) {
@@ -255,6 +320,19 @@ public class TableControl {
                 tfEditLevel.setText(data.getLevel());
                 taEditAddress.setText(data.getAlamat());
                 tfEditUsername.setText(data.getUsername());
+            }
+        }
+    }
+    
+    public void showMemberData(String memberId, javax.swing.JTextField tfIdMember, javax.swing.JTextField tfNamaMember, javax.swing.JTextField tfTanggalLahir, javax.swing.JTextField tfEmailMember, javax.swing.JTextArea taAlamat, javax.swing.JTextField tfNoTelp) {
+        for (Member data : daftarMember) {
+            if (memberId.equals(data.getId_member())) {
+                tfIdMember.setText(data.getId_member());
+                tfNamaMember.setText(data.getNama_member());
+                tfTanggalLahir.setText(data.getTanggal_lahir());
+                tfEmailMember.setText(data.getEmail());
+                taAlamat.setText(data.getAlamat());
+                tfNoTelp.setText(data.getNo_telp());
             }
         }
     }
@@ -322,6 +400,28 @@ public class TableControl {
         }
     }
     
+    public void loadMember() {
+        daftarMember = new ArrayList<>();
+        String query = "SELECT * FROM member";
+        try {
+            PreparedStatement ps = Connection.openConnection().prepareStatement(query);
+            ResultSet rs = ps.executeQuery();
+            
+            while (rs.next()) {
+                String idMember = rs.getString("id_member");
+                String namaMember = rs.getString("nama_member");
+                String alamat = rs.getString("alamat");
+                String tanggalLahir = rs.getString("tanggal_lahir");
+                String noTelp = rs.getString("no_telp");
+                String email = rs.getString("email");
+                Member data = new Member(idMember, namaMember, alamat, tanggalLahir, noTelp, email);
+                daftarMember.add(data);
+            }
+        } catch(SQLException ex) {
+            Logger.getLogger(AdminPage.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
     public void loadAdminTransaction() {
         daftarTransaksiAdmin = new ArrayList<>();
         String query = "SELECT * FROM transaksi";
@@ -348,6 +448,73 @@ public class TableControl {
         } catch (SQLException ex) {
             Logger.getLogger(AdminPage.class.getName()).log(Level.SEVERE, null, ex);
         }
+    }
+    
+    public void ShowAdminTransactionBy(String category, String date) {
+        int total = 0;
+        int keuntungan = 0;
+        int gaji = 0;
+        FunctionLibrary fl = new FunctionLibrary();
+        modelTransactionAdmin.setRowCount(0);
+        daftarProfit = new ArrayList<>();
+        if(category.equals("Today")){
+            String todayDate = fl.splitDate(date);
+            for (Transaction data : daftarTransaksiAdmin) {
+                if (fl.splitDate(fl.splitDate(data.getTanggal())).equals(todayDate)) {
+                    modelTransactionAdmin.addRow(new Object[]{data.getId(), data.getTanggal(), data.getMenu(), data.getBarber(), 
+                        data.getCashier(), data.getMember(), data.getTotal(), data.getUangBayar(), data.getDiskon(), 
+                        data.getKembalian()});
+                    total += data.getTotal();
+                    keuntungan = (total * 30) / 100;
+                    gaji = keuntungan;
+                }
+            }
+        }
+        else if(category.equals("Month")){
+            for (Transaction data : daftarTransaksiAdmin) {
+                if (fl.splitMonth(data.getTanggal()).equals(date)) {
+                    modelTransactionAdmin.addRow(new Object[]{data.getId(), data.getTanggal(), data.getMenu(), data.getBarber(), 
+                        data.getCashier(), data.getMember(), data.getTotal(), data.getUangBayar(), data.getDiskon(), 
+                        data.getKembalian()});
+                    total += data.getTotal();
+                    keuntungan = (total * 30) / 100;
+                    gaji = keuntungan;
+                }
+            }
+        }
+        else if(category.equals("Year")){
+            String todayYear = fl.splitYear(date);
+            for (Transaction data : daftarTransaksiAdmin) {
+                if (fl.splitDate(fl.splitYear(data.getTanggal())).equals(todayYear)) {
+                    modelTransactionAdmin.addRow(new Object[]{data.getId(), data.getTanggal(), data.getMenu(), data.getBarber(), 
+                        data.getCashier(), data.getMember(), data.getTotal(), data.getUangBayar(), data.getDiskon(), 
+                        data.getKembalian()});
+                    total += data.getTotal();
+                    keuntungan = (total * 30) / 100;
+                    gaji = keuntungan;
+                }
+            }
+        }
+        else if(category.equals("All")){
+            for (Transaction data : daftarTransaksiAdmin) {
+                modelTransactionAdmin.addRow(new Object[]{data.getId(), data.getTanggal(), data.getMenu(), data.getBarber(), 
+                    data.getCashier(), data.getMember(), data.getTotal(), data.getUangBayar(), data.getDiskon(), 
+                    data.getKembalian()});
+                    total += data.getTotal();
+                    keuntungan = (total * 30) / 100;
+                    gaji = keuntungan;
+            }
+        }
+        Profit data = new Profit(total, keuntungan, gaji);
+        daftarProfit.add(data);
+    }
+    
+    public int getTotal() {
+        int total = 0;
+        for (Profit p : daftarProfit) {
+            total = p.getTotal();
+        }
+        return total;
     }
     
     public void loadUser(String category) {

@@ -119,7 +119,7 @@ public class ControllerCashier {
         }
     }
     
-    public void salaryInfo(String cashierUsername, javax.swing.JLabel jlSalary) {
+    public int salaryInfo(String cashierUsername) {
         int salary = 0;
         String query = "SELECT SUM(total_harga) FROM transaksi WHERE username_cashier = ?";
         try {
@@ -129,13 +129,13 @@ public class ControllerCashier {
             
             if (rs.next()) {
                 int total = rs.getInt(1);
-                salary = (total * 20) / 100;
+                salary = (total * 25) / 100;
             }
             
-            jlSalary.setText(String.valueOf(salary));
         } catch (SQLException ex) {
             Logger.getLogger(CashierPage.class.getName()).log(Level.SEVERE, null, ex);
         }
+        return salary;
     }
     
     public void totalDataInputInfo(String cashierUsername, javax.swing.JLabel jlDataInput) {

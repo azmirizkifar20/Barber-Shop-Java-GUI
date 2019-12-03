@@ -193,6 +193,10 @@ public class CashierPage extends javax.swing.JFrame {
         jlDataInput = new javax.swing.JLabel();
         jLabel35 = new javax.swing.JLabel();
         jLabel38 = new javax.swing.JLabel();
+        cbMonth = new javax.swing.JComboBox();
+        cbYear = new javax.swing.JComboBox();
+        tfSalaryFiltered = new javax.swing.JTextField();
+        jLabel36 = new javax.swing.JLabel();
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -354,6 +358,11 @@ public class CashierPage extends javax.swing.JFrame {
         jLabel9.setText("ID Member");
 
         tfDate.setEnabled(false);
+        tfDate.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                tfDateActionPerformed(evt);
+            }
+        });
 
         jLabel10.setText("Price");
 
@@ -453,7 +462,7 @@ public class CashierPage extends javax.swing.JFrame {
                 .addGroup(addTransactionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(tfDiscount)
                     .addComponent(tfPay, javax.swing.GroupLayout.DEFAULT_SIZE, 36, Short.MAX_VALUE))
-                .addContainerGap(119, Short.MAX_VALUE))
+                .addContainerGap(158, Short.MAX_VALUE))
             .addGroup(addTransactionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(addTransactionLayout.createSequentialGroup()
                     .addGap(90, 90, 90)
@@ -468,7 +477,7 @@ public class CashierPage extends javax.swing.JFrame {
                     .addComponent(tfPrice, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGap(29, 29, 29)
                     .addComponent(btnProcess, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addContainerGap(54, Short.MAX_VALUE)))
+                    .addContainerGap(93, Short.MAX_VALUE)))
         );
 
         mainPanel.add(addTransaction, "card2");
@@ -559,7 +568,7 @@ public class CashierPage extends javax.swing.JFrame {
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 277, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(btnEdit, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(20, Short.MAX_VALUE))
+                .addContainerGap(59, Short.MAX_VALUE))
         );
 
         mainPanel.add(transactionHistory, "card3");
@@ -665,7 +674,7 @@ public class CashierPage extends javax.swing.JFrame {
                         .addComponent(jdBirthOfDates, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(18, 18, 18)
                 .addComponent(btnProcessMember, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(53, Short.MAX_VALUE))
+                .addContainerGap(92, Short.MAX_VALUE))
         );
 
         mainPanel.add(addMember, "card4");
@@ -752,6 +761,29 @@ public class CashierPage extends javax.swing.JFrame {
         jLabel38.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jLabel38.setText("Total Data");
 
+        cbMonth.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "All Month", "Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember" }));
+        cbMonth.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cbMonthActionPerformed(evt);
+            }
+        });
+
+        cbYear.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "2019", "2020", "2021", "2022", "2023" }));
+        cbYear.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cbYearActionPerformed(evt);
+            }
+        });
+
+        tfSalaryFiltered.setEditable(false);
+        tfSalaryFiltered.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                tfSalaryFilteredActionPerformed(evt);
+            }
+        });
+
+        jLabel36.setText("Total");
+
         javax.swing.GroupLayout cashierInfoLayout = new javax.swing.GroupLayout(cashierInfo);
         cashierInfo.setLayout(cashierInfoLayout);
         cashierInfoLayout.setHorizontalGroup(
@@ -808,10 +840,19 @@ public class CashierPage extends javax.swing.JFrame {
                                         .addComponent(jLabel35)
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                         .addComponent(jlDataInput))))
-                            .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 511, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(cashierInfoLayout.createSequentialGroup()
                                 .addGap(155, 155, 155)
-                                .addComponent(jLabel29)))))
+                                .addComponent(jLabel29))
+                            .addGroup(cashierInfoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                .addGroup(cashierInfoLayout.createSequentialGroup()
+                                    .addComponent(cbYear, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGap(18, 18, 18)
+                                    .addComponent(cbMonth, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGap(83, 83, 83)
+                                    .addComponent(jLabel36)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                    .addComponent(tfSalaryFiltered))
+                                .addComponent(jScrollPane3, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 511, javax.swing.GroupLayout.PREFERRED_SIZE)))))
                 .addContainerGap(84, Short.MAX_VALUE))
         );
         cashierInfoLayout.setVerticalGroup(
@@ -857,11 +898,18 @@ public class CashierPage extends javax.swing.JFrame {
                             .addComponent(jLabel35)
                             .addComponent(jlDataInput))
                         .addComponent(jLabel38)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 30, Short.MAX_VALUE)
+                .addGap(18, 18, 18)
                 .addComponent(jLabel29)
                 .addGap(18, 18, 18)
                 .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(26, 26, 26))
+                .addGap(18, 18, 18)
+                .addGroup(cashierInfoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(cashierInfoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(cbMonth, javax.swing.GroupLayout.DEFAULT_SIZE, 32, Short.MAX_VALUE)
+                        .addComponent(cbYear, javax.swing.GroupLayout.DEFAULT_SIZE, 32, Short.MAX_VALUE))
+                    .addComponent(tfSalaryFiltered)
+                    .addComponent(jLabel36, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(27, 27, 27))
         );
 
         mainPanel.add(cashierInfo, "card5");
@@ -1045,11 +1093,16 @@ public class CashierPage extends javax.swing.JFrame {
         mainPanel.repaint();
         mainPanel.revalidate();
         
+        // menampilkan data info cashier
         cc.cashierInfo(tfUsernameSession.getText(), jLCashierName, jlCashierAddress, jlCashierGender, jlIdentificationId);
-        cc.salaryInfo(tfUsernameSession.getText(), jlSalary);
+        int totalSalary = cc.salaryInfo(tfUsernameSession.getText());
+        jlSalary.setText(String.valueOf(totalSalary));
         cc.totalDataInputInfo(tfUsernameSession.getText(), jlDataInput);
+        
         tc.loadCashierTransaction(tfUsernameSession.getText());
-        tc.showDataSalary(tc.getModelCashier(), tc.getModelMember(), tc.getDaftarTransaksiCashier(), tc.getDaftarTransaksiMember());
+        tc.showDataSalaryCashier(tc.getModelCashier(), tc.getModelMember(), tc.getDaftarTransaksiCashier(), tc.getDaftarTransaksiMember());
+        tfSalaryFiltered.setText(String.valueOf(totalSalary));
+        cbMonth.setSelectedIndex(0);
     }//GEN-LAST:event_btnCashierInfoActionPerformed
 
     private void btnVerificationMemberActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVerificationMemberActionPerformed
@@ -1085,6 +1138,30 @@ public class CashierPage extends javax.swing.JFrame {
     private void tfCariActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tfCariActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_tfCariActionPerformed
+
+    private void cbMonthActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbMonthActionPerformed
+        // TODO add your handling code here:
+        int indexMonth = cbMonth.getSelectedIndex();
+        int totalSalary = 0;
+        String month = String.valueOf(indexMonth);
+        String year = cbYear.getSelectedItem().toString();
+        
+        tc.loadCashierTransaction(tfUsernameSession.getText());
+        totalSalary = tc.showDataSalaryCashierMonth(year, month);
+        tfSalaryFiltered.setText(String.valueOf(totalSalary));
+    }//GEN-LAST:event_cbMonthActionPerformed
+
+    private void cbYearActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbYearActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_cbYearActionPerformed
+
+    private void tfDateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tfDateActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_tfDateActionPerformed
+
+    private void tfSalaryFilteredActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tfSalaryFilteredActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_tfSalaryFilteredActionPerformed
 
     /**
      * @param args the command line arguments
@@ -1146,6 +1223,8 @@ public class CashierPage extends javax.swing.JFrame {
     private javax.swing.JPanel cashierInfo;
     private javax.swing.JComboBox cbBarber;
     private javax.swing.JComboBox cbMenu;
+    private javax.swing.JComboBox cbMonth;
+    private javax.swing.JComboBox cbYear;
     private javax.swing.JLabel jLCashierName;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
@@ -1175,6 +1254,7 @@ public class CashierPage extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel33;
     private javax.swing.JLabel jLabel34;
     private javax.swing.JLabel jLabel35;
+    private javax.swing.JLabel jLabel36;
     private javax.swing.JLabel jLabel38;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
@@ -1207,6 +1287,7 @@ public class CashierPage extends javax.swing.JFrame {
     private javax.swing.JTextField tfPay;
     private javax.swing.JTextField tfPhoneNumber;
     private javax.swing.JTextField tfPrice;
+    private javax.swing.JTextField tfSalaryFiltered;
     private javax.swing.JLabel tfUsernameSession;
     private javax.swing.JPanel transactionHistory;
     // End of variables declaration//GEN-END:variables

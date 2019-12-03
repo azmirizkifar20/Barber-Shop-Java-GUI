@@ -60,11 +60,19 @@ public class FunctionLibrary {
         String result = dateDevide[1];
         return result;
     }
+    
     public String splitYear(String dateTransaction){
         String tempString = dateTransaction;
         String [] mainDevide = tempString.split(" ",2);
         String [] dateDevide = mainDevide[0].split("-",3);
         String result = dateDevide[2];
+        return result;
+    }
+    
+    public String splitDate(String dateTransaction){
+        String tempString = dateTransaction;
+        String [] mainDevide = tempString.split(" ",2);
+        String result = mainDevide[0];
         return result;
     }
 }
