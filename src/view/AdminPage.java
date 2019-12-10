@@ -1448,7 +1448,7 @@ public class AdminPage extends javax.swing.JFrame {
 
     private void cbMonthAdminActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbMonthAdminActionPerformed
         // TODO add your handling code here:
-        showTransactionHistory("month", String.valueOf(cbMonthAdmin.getSelectedIndex()));
+        showTransactionHistory("Month", String.valueOf(cbMonthAdmin.getSelectedIndex()));
         System.out.println(String.valueOf(cbMonthAdmin.getSelectedIndex()));
         tfTotalPemasukkan.setText(String.valueOf(tc.getTotal()));
         tfKeuntungan.setText(String.valueOf((tc.getTotal() * 30) / 100));

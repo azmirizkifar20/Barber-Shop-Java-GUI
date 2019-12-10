@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Waktu pembuatan: 30 Nov 2019 pada 20.50
+-- Waktu pembuatan: 10 Des 2019 pada 20.13
 -- Versi server: 10.1.37-MariaDB
 -- Versi PHP: 7.3.0
 
@@ -74,10 +74,14 @@ INSERT INTO `transaksi` (`id_transaksi`, `tanggal`, `menu`, `username_barber`, `
 (2, '27-11-2019 0:5:58', 'Shave', 'azmirf20', 'kas', 'ys56hz', 20000, 20000, 0, 0),
 (4, '27-11-2019 0:7:37', 'Design', 'azmirf20', 'kas', '-', 40000, 50000, 0, 10000),
 (8, '27-11-2019 0:13:17', 'Haircut', 'azmirf20', 'kas', 'ys56hz', 27000, 30000, 3000, 3000),
-(9, '27-11-2019 3:33:32', 'Haircut', 'Aziz Alfauzi', 'kas', '-', 30000, 30000, 0, 0),
+(9, '27-11-2020 3:33:32', 'Haircut', 'alfathgans', 'kas', '-', 30000, 40000, 0, 10000),
 (10, '27-11-2019 3:44:33', 'Beard Trim / Lineup', 'alfathGans', 'pradina', '-', 22000, 25000, 0, 3000),
-(11, '27-11-2019 11:53:17', 'Haircut & Wash', 'Aziz Alfauzi', 'kas', '-', 35000, 40000, 0, 5000),
-(12, '27-12-2019 11:53:17', 'Haircut & Wash', 'azmirf20', 'kas', '-', 35000, 40000, 0, 5000);
+(11, '27-11-2019 11:53:17', 'Haircut & Wash', 'azizkasep', 'kas', '-', 35000, 40000, 0, 5000),
+(12, '27-12-2019 11:53:17', 'Haircut & Wash', 'azmirf20', 'kas', '-', 35000, 40000, 0, 5000),
+(13, '03-12-2019 21:45:50', 'Haircut & Wash', 'alfathGans', 'kas', '-', 35000, 40000, 0, 5000),
+(14, '04-12-2019 3:37:38', 'Design', 'azmirf20', 'kas', '-', 40000, 50000, 0, 10000),
+(15, '04-12-2019 11:55:56', 'Haircut & Wash', 'azmirf20', 'kas', 'ys56hz', 35000, 40000, 0, 5000),
+(16, '04-12-2021 12:3:21', 'Haircut & Wash', 'azmirf20', 'kas', 'YS56HZ', 35000, 50000, 0, 15000);
 
 -- --------------------------------------------------------
 
@@ -103,11 +107,11 @@ CREATE TABLE `users` (
 INSERT INTO `users` (`id_user`, `nama`, `nik`, `alamat`, `jenis_kelamin`, `level`, `username`, `password`) VALUES
 (8, 'admin', '-', '-', 1, 'Admin', 'admin', '40bd001563085fc35165329ea1ff5c5ecbdbbeef'),
 (9, 'Muhamad Azmi Rizkifar', '554023942304', 'Perum Citalang Indah', 1, 'Barber', 'azmirf20', '40bd001563085fc35165329ea1ff5c5ecbdbbeef'),
-(10, 'Muhammad Alfath Abibi', '545284704239', 'Makassar', 1, 'Barber', 'alfathGans', '40bd001563085fc35165329ea1ff5c5ecbdbbeef'),
+(10, 'Muhammad Alfath Abibi', '545284704239', 'Makassar', 1, 'Barber', 'alfathgans', '40bd001563085fc35165329ea1ff5c5ecbdbbeef'),
 (11, 'kasir Sugiono', '4055', 'Wonosobo, Jawa Tengah', 1, 'Cashier', 'kas', '40bd001563085fc35165329ea1ff5c5ecbdbbeef'),
-(12, 'Aziz Alfauzi', '4325830123', 'Klaten wonosobo', 1, 'Barber', 'Aziz Alfauzi', '40bd001563085fc35165329ea1ff5c5ecbdbbeef'),
+(12, 'Aziz Alfauzi', '4325830123', 'Klaten wonosobo', 1, 'Barber', 'azizkasep', '40bd001563085fc35165329ea1ff5c5ecbdbbeef'),
 (13, 'ST Sheillya Pradina', '43254017310', 'SMK Telkom Makassar', 2, 'Cashier', 'pradina', '40bd001563085fc35165329ea1ff5c5ecbdbbeef'),
-(14, 'Farhan Reninda Budiansyah', '231295231248', 'Perum Griya Asri', 1, 'Barber', 'farhan', '40bd001563085fc35165329ea1ff5c5ecbdbbeef'),
+(14, 'Farhan Reninda Budiansyah', '231295231248', 'Perum Griya Asri 2', 1, 'Barber', 'farhan', '40bd001563085fc35165329ea1ff5c5ecbdbbeef'),
 (15, 'Vira Ayu Indita', '4345331231', 'Griya Bandung Asri', 2, 'Cashier', 'vira', '40bd001563085fc35165329ea1ff5c5ecbdbbeef');
 
 --
@@ -141,7 +145,7 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT untuk tabel `transaksi`
 --
 ALTER TABLE `transaksi`
-  MODIFY `id_transaksi` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+  MODIFY `id_transaksi` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
 
 --
 -- AUTO_INCREMENT untuk tabel `users`
