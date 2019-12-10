@@ -224,12 +224,14 @@ public class TableControl {
                     salaryTotal += salary;
                 }
             } else {
-                total = data.getTotal();
-                salary = (total * 25) / 100;
-                modelMember.addRow(new Object[]{no2, data.getTanggal(), data.getTotal(), salary});
-                modelCashier.addRow(new Object[]{no2, data.getTanggal(), data.getTotal(), salary});
-                no2++;
-                salaryTotal += salary;
+                if (fl.splitYear(data.getTanggal()).equals(year)) {
+                    total = data.getTotal();
+                    salary = (total * 25) / 100;
+                    modelMember.addRow(new Object[]{no2, data.getTanggal(), data.getTotal(), salary});
+                    modelCashier.addRow(new Object[]{no2, data.getTanggal(), data.getTotal(), salary});
+                    no2++;
+                    salaryTotal += salary;
+                }
             }
         }
         return salaryTotal;
@@ -255,12 +257,14 @@ public class TableControl {
                     salaryTotal += salary;
                 }
             } else {
-                total = data.getTotal();
-                salary = (total * 45) / 100;
-                modelMember.addRow(new Object[]{no, data.getTanggal(), data.getTotal(), salary});
-                modelBarber.addRow(new Object[]{no, data.getTanggal(), data.getTotal(), salary});
-                no++;
-                salaryTotal += salary;
+                if (fl.splitYear(data.getTanggal()).equals(year)) {
+                    total = data.getTotal();
+                    salary = (total * 45) / 100;
+                    modelMember.addRow(new Object[]{no, data.getTanggal(), data.getTotal(), salary});
+                    modelBarber.addRow(new Object[]{no, data.getTanggal(), data.getTotal(), salary});
+                    no++;
+                    salaryTotal += salary;
+                }
             }
         }
         return salaryTotal;
@@ -471,6 +475,7 @@ public class TableControl {
             }
         }
         else if(category.equals("Month")){
+//            String month = fl.splitMonth(date);
             for (Transaction data : daftarTransaksiAdmin) {
                 if (fl.splitMonth(data.getTanggal()).equals(date)) {
                     modelTransactionAdmin.addRow(new Object[]{data.getId(), data.getTanggal(), data.getMenu(), data.getBarber(), 
@@ -483,9 +488,9 @@ public class TableControl {
             }
         }
         else if(category.equals("Year")){
-            String todayYear = fl.splitYear(date);
+            String Year = date;
             for (Transaction data : daftarTransaksiAdmin) {
-                if (fl.splitDate(fl.splitYear(data.getTanggal())).equals(todayYear)) {
+                if (fl.splitDate(fl.splitYear(data.getTanggal())).equals(Year)) {
                     modelTransactionAdmin.addRow(new Object[]{data.getId(), data.getTanggal(), data.getMenu(), data.getBarber(), 
                         data.getCashier(), data.getMember(), data.getTotal(), data.getUangBayar(), data.getDiskon(), 
                         data.getKembalian()});

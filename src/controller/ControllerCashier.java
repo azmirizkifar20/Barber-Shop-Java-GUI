@@ -9,9 +9,11 @@ import model.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
+import model.FunctionLibrary;
 import model.TransactionModel;
 import view.CashierPage;
 
@@ -20,6 +22,7 @@ import view.CashierPage;
  * @author user
  */
 public class ControllerCashier {
+    FunctionLibrary fl = new FunctionLibrary();
     
     public void loadBarber(javax.swing.JComboBox cbBarber) {
         try {
@@ -33,6 +36,45 @@ public class ControllerCashier {
             
             while(rs.next()) {
                 cbBarber.addItem(rs.getString("username"));
+            }
+            
+        } catch(SQLException ex) {
+            Logger.getLogger(CashierPage.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    public void loadYear(javax.swing.JComboBox cbYear, String username) {
+        try {
+            PreparedStatement ps;
+            ResultSet rs;
+            String year = "";
+            ArrayList<String> yearFix = new ArrayList<>();
+            String query = "SELECT * FROM transaksi WHERE username_cashier = ?";
+            ps = Connection.openConnection().prepareStatement(query);
+            ps.setString(1, username);
+            rs = ps.executeQuery();
+            int count = 0;
+            while(rs.next()) {
+                String tanggal = rs.getString("tanggal");
+                year = fl.splitYear(tanggal);
+                
+                if (count == 0) {
+                    yearFix.add(year);
+                    cbYear.addItem(year);
+                    count++;
+                }
+                else{
+                    int count2 = 0;
+                    for (int i = 0; i < yearFix.size(); i++) {
+                        if (year.equals(yearFix.get(i))) {
+                            count2++;
+                        }
+                    }
+                    if (count2 == 0) {
+                        cbYear.addItem(year);
+                    }
+                    
+                }
             }
             
         } catch(SQLException ex) {

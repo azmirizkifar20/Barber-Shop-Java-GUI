@@ -24,6 +24,7 @@ public class BarberPage extends javax.swing.JFrame {
         tc.ShowBarberTransaction();
         tc.styleBarberTable(jtTransaction, jtBarberSalary);
         
+        cb.loadYear(cbYear, session.getUsername());
         jtTransaction.setModel(tc.getModelTransaksiBarber());
         jtBarberSalary.setModel(tc.getModelBarber());
         tfUsernameSession.setText(session.getUsername());
@@ -341,7 +342,6 @@ public class BarberPage extends javax.swing.JFrame {
         jLabel38.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jLabel38.setText("Total Data");
 
-        cbYear.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "2019", "2020", "2021", "2022", "2023" }));
         cbYear.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 cbYearActionPerformed(evt);
@@ -594,6 +594,14 @@ public class BarberPage extends javax.swing.JFrame {
 
     private void cbYearActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbYearActionPerformed
         // TODO add your handling code here:
+        int indexMonth = cbMonth.getSelectedIndex();
+        int totalSalary = 0;
+        String month = String.valueOf(indexMonth);
+        String year = cbYear.getSelectedItem().toString();
+        
+        tc.loadBarberTransaction(tfUsernameSession.getText());
+        totalSalary = tc.showDataSalaryBarberMonth(year, month);
+        tfSalaryFiltered.setText(String.valueOf(totalSalary));
     }//GEN-LAST:event_cbYearActionPerformed
 
     private void cbMonthActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbMonthActionPerformed

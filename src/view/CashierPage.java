@@ -22,6 +22,7 @@ public class CashierPage extends javax.swing.JFrame {
         this.setLocationRelativeTo(null);
         
         cc.loadBarber(cbBarber);
+        cc.loadYear(cbYear, session.getUsername());
         tc.loadKolomGaji(tc.getModelCashier());
         tc.loadColumnMember();
         tc.loadKolomTransaksi(tc.getModelTransaksiCashier(), "Barber");
@@ -784,7 +785,6 @@ public class CashierPage extends javax.swing.JFrame {
             }
         });
 
-        cbYear.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "2019", "2020", "2021", "2022", "2023" }));
         cbYear.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 cbYearActionPerformed(evt);
@@ -951,19 +951,30 @@ public class CashierPage extends javax.swing.JFrame {
 
         jLabel41.setText("ID Member");
 
+        tfIdMember.setEditable(false);
+
         jLabel42.setText("Nama Member");
+
+        tfNamaMember.setEditable(false);
 
         jLabel44.setText("Tanggal Lahir");
 
+        tfTanggalLahir.setEditable(false);
+
         jLabel45.setText("Email");
+
+        tfEmailMember2.setEditable(false);
 
         jLabel43.setText("Alamat");
 
+        taAlamat.setEditable(false);
         taAlamat.setColumns(20);
         taAlamat.setRows(5);
         jScrollPane7.setViewportView(taAlamat);
 
         s.setText("Tanggal Lahir");
+
+        tfNoTelp.setEditable(false);
 
         jLabel46.setFont(new java.awt.Font("Rockwell", 0, 36)); // NOI18N
         jLabel46.setText("Member Info");
@@ -1276,6 +1287,14 @@ public class CashierPage extends javax.swing.JFrame {
 
     private void cbYearActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbYearActionPerformed
         // TODO add your handling code here:
+        int indexMonth = cbMonth.getSelectedIndex();
+        int totalSalary = 0;
+        String month = String.valueOf(indexMonth);
+        String year = cbYear.getSelectedItem().toString();
+        
+        tc.loadCashierTransaction(tfUsernameSession.getText());
+        totalSalary = tc.showDataSalaryCashierMonth(year, month);
+        tfSalaryFiltered.setText(String.valueOf(totalSalary));
     }//GEN-LAST:event_cbYearActionPerformed
 
     private void tfDateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tfDateActionPerformed

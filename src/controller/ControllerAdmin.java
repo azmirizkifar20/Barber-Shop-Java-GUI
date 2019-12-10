@@ -4,14 +4,16 @@ import model.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import model.FunctionLibrary;
 import view.AdminPage;
-import view.BarberPage;
 
 public class ControllerAdmin {
+    FunctionLibrary fl = new FunctionLibrary();
+    
     public int salaryInfoBarber(String usernameBarber) {
         int salary = 0;
         String query = "SELECT SUM(total_harga) FROM transaksi WHERE username_barber = ?";
@@ -26,7 +28,7 @@ public class ControllerAdmin {
             }
             
         } catch (SQLException ex) {
-            Logger.getLogger(BarberPage.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(AdminPage.class.getName()).log(Level.SEVERE, null, ex);
         }
         return salary;
     }
@@ -45,7 +47,7 @@ public class ControllerAdmin {
             }
             
         } catch (SQLException ex) {
-            Logger.getLogger(BarberPage.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(AdminPage.class.getName()).log(Level.SEVERE, null, ex);
         }
         return salary;
     }
@@ -64,7 +66,7 @@ public class ControllerAdmin {
             
             jlDataInput.setText(String.valueOf(total));
         } catch (SQLException ex) {
-            Logger.getLogger(BarberPage.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(AdminPage.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
     
@@ -82,7 +84,7 @@ public class ControllerAdmin {
             
             jlDataInput.setText(String.valueOf(total));
         } catch (SQLException ex) {
-            Logger.getLogger(BarberPage.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(AdminPage.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
     
@@ -127,6 +129,109 @@ public class ControllerAdmin {
                 java.util.logging.Logger.getLogger(AdminPage.class.getName()).log(Level.SEVERE, null, ex);
 
             }
+        }
+    }
+    
+    public void loadYear(javax.swing.JComboBox cbYear, String username) {
+        try {
+            String year = "";
+            ArrayList<String> yearFix = new ArrayList<>();
+            String queryCek = "SELECT * FROM users WHERE username = ?";
+            PreparedStatement psCek = Connection.openConnection().prepareStatement(queryCek);
+            psCek.setString(1, username);
+            ResultSet rsCek = psCek.executeQuery();
+            
+            if (rsCek.next()) {
+                String level = rsCek.getString("level");
+                if (level.equals("Cashier")) {
+                    String query = "SELECT * FROM transaksi WHERE username_cashier = ?";
+                    PreparedStatement ps = Connection.openConnection().prepareStatement(query);
+                    ps.setString(1, username);
+                    ResultSet rs = ps.executeQuery();
+                    int count = 0;
+                    while(rs.next()) {
+                        String tanggal = rs.getString("tanggal");
+                        year = fl.splitYear(tanggal);
+
+                        if (count == 0) {
+                            yearFix.add(year);
+                            cbYear.addItem(year);
+                            count++;
+                        }
+                        else {
+                            int count2 = 0;
+                            for (int i = 0; i < yearFix.size(); i++) {
+                                if (year.equals(yearFix.get(i))) {
+                                    count2++;
+                                }
+                            }
+                            if (count2 == 0) {
+                                cbYear.addItem(year);
+                            }
+
+                        }
+                    }
+                } else if (level.equals("Barber")) {
+                    String query = "SELECT * FROM transaksi WHERE username_barber = ?";
+                    PreparedStatement ps = Connection.openConnection().prepareStatement(query);
+                    ps.setString(1, username);
+                    ResultSet rs = ps.executeQuery();
+                    int count = 0;
+                    while(rs.next()) {
+                        String tanggal = rs.getString("tanggal");
+                        year = fl.splitYear(tanggal);
+
+                        if (count == 0) {
+                            yearFix.add(year);
+                            cbYear.addItem(year);
+                            count++;
+                        }
+                        else {
+                            int count2 = 0;
+                            for (int i = 0; i < yearFix.size(); i++) {
+                                if (year.equals(yearFix.get(i))) {
+                                    count2++;
+                                }
+                            }
+                            if (count2 == 0) {
+                                cbYear.addItem(year);
+                            }
+
+                        }
+                    }
+                }
+                else if (level.equals("Admin")) {
+                    String query = "SELECT * FROM transaksi";
+                    PreparedStatement ps = Connection.openConnection().prepareStatement(query);
+                    ResultSet rs = ps.executeQuery();
+                    int count = 0;
+                    while(rs.next()) {
+                        String tanggal = rs.getString("tanggal");
+                        year = fl.splitYear(tanggal);
+
+                        if (count == 0) {
+                            yearFix.add(year);
+                            cbYear.addItem(year);
+                            count++;
+                        }
+                        else {
+                            int count2 = 0;
+                            for (int i = 0; i < yearFix.size(); i++) {
+                                if (year.equals(yearFix.get(i))) {
+                                    count2++;
+                                }
+                            }
+                            if (count2 == 0) {
+                                cbYear.addItem(year);
+                            }
+
+                        }
+                    }
+                }
+                
+            }
+        } catch(SQLException ex) {
+            Logger.getLogger(AdminPage.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 }

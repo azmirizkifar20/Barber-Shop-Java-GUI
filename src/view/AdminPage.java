@@ -17,15 +17,17 @@ import javax.swing.JTable;
 import model.Session;
 
 public class AdminPage extends javax.swing.JFrame {
+    Date ys = new Date();
     TableControl tc = new TableControl();
     ControllerAdmin ca = new ControllerAdmin();
     SimpleDateFormat x = new SimpleDateFormat("dd-MM-yyyy");
-    Date ys = new Date();
     
     public AdminPage(Session session) {
         initComponents();
         this.setLocationRelativeTo(null);
-        
+        cbYearHistory.setEnabled(false);
+        cbMonthAdmin.setEnabled(false);
+        ca.loadYear(cbYearHistory, "admin");
         // loadColumn
         tc.loadColumnUser();
         tc.loadColumnMember();
@@ -38,13 +40,14 @@ public class AdminPage extends javax.swing.JFrame {
         tc.styleAdminTable(jtTransaction);
         tc.styleAdminTable(jtMember);
         
-        // all
+        // set model
         jtUsers.setModel(tc.getModelUser());
         jtTransaction.setModel(tc.getModelTransactionAdmin());
         jtMemberSalary.setModel(tc.getModelMember());
         jtMember.setModel(tc.getModelMemberCukur());
-        tfUsernameSession.setText(session.getUsername());
         
+        // all
+        tfUsernameSession.setText(session.getUsername());
         showTransactionHistory(cbShowBy.getSelectedItem().toString(),x.format(ys));
         tfTotalPemasukkan.setText(String.valueOf(tc.getTotal()));
         tfKeuntungan.setText(String.valueOf((tc.getTotal() * 30) / 100));
@@ -96,6 +99,7 @@ public class AdminPage extends javax.swing.JFrame {
         jLabel39 = new javax.swing.JLabel();
         jLabel40 = new javax.swing.JLabel();
         btnPrint = new javax.swing.JButton();
+        cbYearHistory = new javax.swing.JComboBox();
         registerPanel = new javax.swing.JPanel();
         jPanel2 = new javax.swing.JPanel();
         jLabel3 = new javax.swing.JLabel();
@@ -410,6 +414,13 @@ public class AdminPage extends javax.swing.JFrame {
             }
         });
 
+        cbYearHistory.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "-- Choose Year --" }));
+        cbYearHistory.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cbYearHistoryActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout transactionHistoryLayout = new javax.swing.GroupLayout(transactionHistory);
         transactionHistory.setLayout(transactionHistoryLayout);
         transactionHistoryLayout.setHorizontalGroup(
@@ -424,9 +435,11 @@ public class AdminPage extends javax.swing.JFrame {
                         .addGroup(transactionHistoryLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                             .addGroup(transactionHistoryLayout.createSequentialGroup()
                                 .addComponent(cbShowBy, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(cbMonthAdmin, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addGap(18, 18, 18)
+                                .addComponent(cbYearHistory, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addGap(18, 18, 18)
+                                .addComponent(cbMonthAdmin, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(54, 54, 54)
                                 .addComponent(tfCari, javax.swing.GroupLayout.PREFERRED_SIZE, 169, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(btnCari))
@@ -444,11 +457,13 @@ public class AdminPage extends javax.swing.JFrame {
                 .addContainerGap()
                 .addComponent(jLabel12)
                 .addGap(18, 18, 18)
-                .addGroup(transactionHistoryLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(cbShowBy, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(cbMonthAdmin, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(tfCari, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnCari, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(transactionHistoryLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addGroup(transactionHistoryLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(cbShowBy, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(cbMonthAdmin, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(tfCari, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(btnCari, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(cbYearHistory))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 261, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
@@ -875,7 +890,6 @@ public class AdminPage extends javax.swing.JFrame {
         jLabel38.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jLabel38.setText("Total Data");
 
-        cbYear.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "2019", "2020", "2021", "2022", "2023" }));
         cbYear.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 cbYearActionPerformed(evt);
@@ -1043,17 +1057,28 @@ public class AdminPage extends javax.swing.JFrame {
 
         jLabel41.setText("ID Member");
 
+        tfIdMember.setEditable(false);
+
         jLabel42.setText("Nama Member");
+
+        tfTanggalLahir.setEditable(false);
 
         jLabel43.setText("Alamat");
 
+        taAlamat.setEditable(false);
         taAlamat.setColumns(20);
         taAlamat.setRows(5);
         jScrollPane7.setViewportView(taAlamat);
 
         jLabel44.setText("Tanggal Lahir");
 
+        tfNamaMember.setEditable(false);
+
         s.setText("Tanggal Lahir");
+
+        tfNoTelp.setEditable(false);
+
+        tfEmailMember.setEditable(false);
 
         jLabel45.setText("Email");
 
@@ -1177,8 +1202,12 @@ public class AdminPage extends javax.swing.JFrame {
         tfCari.setText("");
         if (cbShowBy.getSelectedItem().toString().equals("Month")) {
             cbMonthAdmin.setEnabled(true);
-        }else{
+        }else if(cbShowBy.getSelectedItem().toString().equals("Year")){
+            cbYearHistory.setEnabled(true);
+        }
+        else{
             cbMonthAdmin.setEnabled(false);
+            cbYearHistory.setEnabled(false);
         }
         cbShowBy.setSelectedIndex(0);
         
@@ -1312,6 +1341,7 @@ public class AdminPage extends javax.swing.JFrame {
         tfEditLevel.setText("");
         taEditAddress.setText("");
         tfEditUsername.setText("");
+        cbYear.removeAllItems();
     }//GEN-LAST:event_btnMenuUsersActionPerformed
 
     private void cbCategoryUserActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbCategoryUserActionPerformed
@@ -1334,13 +1364,13 @@ public class AdminPage extends javax.swing.JFrame {
 
     private void btnSalaryActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalaryActionPerformed
         // TODO add your handling code here:
-        
         if (tfEditName.getText().equals("")) {
             JOptionPane.showMessageDialog(null, "Please Fill with Data");
         } else {
             showSalary();
             String username = tfEditUsername.getText();
             String level = tfEditLevel.getText();
+            ca.loadYear(cbYear, username);
             
             jlMemberName.setText(tfEditName.getText());
             jlMemberAddress.setText(taEditAddress.getText());
@@ -1370,18 +1400,18 @@ public class AdminPage extends javax.swing.JFrame {
         int indexMonth = cbMonth.getSelectedIndex();
         int totalSalary = 0;
         String month = String.valueOf(indexMonth);
-        String year = cbYear.getSelectedItem().toString();
-        
-        if (tfEditLevel.getText().equals("Cashier")) {
-            tc.loadCashierTransaction(tfEditUsername.getText());
-            totalSalary = tc.showDataSalaryCashierMonth(year, month);
+        if (cbYear.getSelectedItem() != null) {
+            String year = cbYear.getSelectedItem().toString();
+            if (tfEditLevel.getText().equals("Cashier")) {
+                tc.loadCashierTransaction(tfEditUsername.getText());
+                totalSalary = tc.showDataSalaryCashierMonth(year, month);
+            }
+            else if(tfEditLevel.getText().equals("Barber")){
+                tc.loadBarberTransaction(tfEditUsername.getText());
+                totalSalary = tc.showDataSalaryBarberMonth(year, month);
+            }
+            tfSalaryFiltered.setText(String.valueOf(totalSalary));
         }
-        else if(tfEditLevel.getText().equals("Barber")){
-            tc.loadBarberTransaction(tfEditUsername.getText());
-            totalSalary = tc.showDataSalaryBarberMonth(year, month);
-        }
-        tfSalaryFiltered.setText(String.valueOf(totalSalary));
-        
     }//GEN-LAST:event_cbMonthActionPerformed
 
     private void btnChangePassActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnChangePassActionPerformed
@@ -1398,11 +1428,28 @@ public class AdminPage extends javax.swing.JFrame {
 
     private void cbYearActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbYearActionPerformed
         // TODO add your handling code here:
+        int indexMonth = cbMonth.getSelectedIndex();
+        int totalSalary = 0;
+        String month = String.valueOf(indexMonth);
+        if (cbYear.getSelectedItem() != null) {
+            String year = cbYear.getSelectedItem().toString();
+            if (tfEditLevel.getText().equals("Cashier")) {
+                tc.loadCashierTransaction(tfEditUsername.getText());
+                totalSalary = tc.showDataSalaryCashierMonth(year, month);
+            }
+            else if(tfEditLevel.getText().equals("Barber")){
+                tc.loadBarberTransaction(tfEditUsername.getText());
+                totalSalary = tc.showDataSalaryBarberMonth(year, month);
+            }
+            tfSalaryFiltered.setText(String.valueOf(totalSalary));
+        }
+        
     }//GEN-LAST:event_cbYearActionPerformed
 
     private void cbMonthAdminActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbMonthAdminActionPerformed
         // TODO add your handling code here:
-        showTransactionHistory(cbShowBy.getSelectedItem().toString(),String.valueOf(cbMonthAdmin.getSelectedIndex()));
+        showTransactionHistory("month", String.valueOf(cbMonthAdmin.getSelectedIndex()));
+        System.out.println(String.valueOf(cbMonthAdmin.getSelectedIndex()));
         tfTotalPemasukkan.setText(String.valueOf(tc.getTotal()));
         tfKeuntungan.setText(String.valueOf((tc.getTotal() * 30) / 100));
         tfGaji.setText(String.valueOf((tc.getTotal() * 70) / 100));
@@ -1413,19 +1460,24 @@ public class AdminPage extends javax.swing.JFrame {
         
         if (cbShowBy.getSelectedItem().toString().equals("Month")) {
             cbMonthAdmin.setEnabled(true);
+            cbYearHistory.setEnabled(false);
             if (cbMonthAdmin.getSelectedIndex() != 0) {
                 showTransactionHistory(cbShowBy.getSelectedItem().toString(),String.valueOf(cbMonthAdmin.getSelectedIndex()));
             }
         }else if (cbShowBy.getSelectedItem().toString().equals("Today")){
             cbMonthAdmin.setEnabled(false);
+            cbYearHistory.setEnabled(false);
             showTransactionHistory(cbShowBy.getSelectedItem().toString(),x.format(ys));
             
         }else if (cbShowBy.getSelectedItem().toString().equals("Year")){
             cbMonthAdmin.setEnabled(false);
+            cbYearHistory.setEnabled(true);
+            
             showTransactionHistory(cbShowBy.getSelectedItem().toString(),x.format(ys));
         }
         else if (cbShowBy.getSelectedItem().toString().equals("All")){
             cbMonthAdmin.setEnabled(false);
+            cbYearHistory.setEnabled(false);
             showTransactionHistory(cbShowBy.getSelectedItem().toString(),x.format(ys));
         }
         tfTotalPemasukkan.setText(String.valueOf(tc.getTotal()));
@@ -1477,6 +1529,14 @@ public class AdminPage extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_btnPrintActionPerformed
 
+    private void cbYearHistoryActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbYearHistoryActionPerformed
+        // TODO add your handling code here:
+        showTransactionHistory("Year", cbYearHistory.getSelectedItem().toString());
+        tfTotalPemasukkan.setText(String.valueOf(tc.getTotal()));
+        tfKeuntungan.setText(String.valueOf((tc.getTotal() * 30) / 100));
+        tfGaji.setText(String.valueOf((tc.getTotal() * 70) / 100));
+    }//GEN-LAST:event_cbYearHistoryActionPerformed
+
     public static void main(String args[]) {
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
         /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
@@ -1527,6 +1587,7 @@ public class AdminPage extends javax.swing.JFrame {
     private javax.swing.JComboBox cbMonthAdmin;
     private javax.swing.JComboBox cbShowBy;
     private javax.swing.JComboBox cbYear;
+    private javax.swing.JComboBox cbYearHistory;
     private javax.swing.JPanel employeeInfo;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;

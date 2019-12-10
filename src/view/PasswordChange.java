@@ -59,6 +59,8 @@ public class PasswordChange extends javax.swing.JFrame {
             }
         });
 
+        tfSessionUsername.setBackground(new java.awt.Color(255, 255, 255));
+        tfSessionUsername.setForeground(new java.awt.Color(255, 255, 255));
         tfSessionUsername.setText("jLabel5");
 
         btnBack.setText("Back");

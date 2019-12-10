@@ -4,11 +4,14 @@ import model.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import model.FunctionLibrary;
 import view.BarberPage;
 
 public class ControllerBarber {
+    FunctionLibrary fl = new FunctionLibrary();
     
     public void memberInfo(String usernameBarber, javax.swing.JLabel jlName, javax.swing.JLabel jlAddress, javax.swing.JLabel jlGender, javax.swing.JLabel jlNik) {
         String query = "SELECT * FROM users WHERE username = ?";
@@ -76,6 +79,45 @@ public class ControllerBarber {
             
             jlDataInput.setText(String.valueOf(total));
         } catch (SQLException ex) {
+            Logger.getLogger(BarberPage.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    public void loadYear(javax.swing.JComboBox cbYear, String username) {
+        try {
+            PreparedStatement ps;
+            ResultSet rs;
+            String year = "";
+            ArrayList<String> yearFix = new ArrayList<>();
+            String query = "SELECT * FROM transaksi WHERE username_barber = ?";
+            ps = Connection.openConnection().prepareStatement(query);
+            ps.setString(1, username);
+            rs = ps.executeQuery();
+            int count = 0;
+            while(rs.next()) {
+                String tanggal = rs.getString("tanggal");
+                year = fl.splitYear(tanggal);
+                
+                if (count == 0) {
+                    yearFix.add(year);
+                    cbYear.addItem(year);
+                    count++;
+                }
+                else {
+                    int count2 = 0;
+                    for (int i = 0; i < yearFix.size(); i++) {
+                        if (year.equals(yearFix.get(i))) {
+                            count2++;
+                        }
+                    }
+                    if (count2 == 0) {
+                        cbYear.addItem(year);
+                    }
+                    
+                }
+            }
+            
+        } catch(SQLException ex) {
             Logger.getLogger(BarberPage.class.getName()).log(Level.SEVERE, null, ex);
         }
     }

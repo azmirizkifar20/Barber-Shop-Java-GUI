@@ -1207,13 +1207,7 @@
                 <Component class="javax.swing.JComboBox" name="cbYear">
                   <Properties>
                     <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
-                      <StringArray count="5">
-                        <StringItem index="0" value="2019"/>
-                        <StringItem index="1" value="2020"/>
-                        <StringItem index="2" value="2021"/>
-                        <StringItem index="3" value="2022"/>
-                        <StringItem index="4" value="2023"/>
-                      </StringArray>
+                      <StringArray count="0"/>
                     </Property>
                   </Properties>
                   <Events>
@@ -1361,6 +1355,9 @@
                   </Properties>
                 </Component>
                 <Component class="javax.swing.JTextField" name="tfIdMember">
+                  <Properties>
+                    <Property name="editable" type="boolean" value="false"/>
+                  </Properties>
                 </Component>
                 <Component class="javax.swing.JLabel" name="jLabel42">
                   <Properties>
@@ -1368,6 +1365,9 @@
                   </Properties>
                 </Component>
                 <Component class="javax.swing.JTextField" name="tfNamaMember">
+                  <Properties>
+                    <Property name="editable" type="boolean" value="false"/>
+                  </Properties>
                 </Component>
                 <Component class="javax.swing.JLabel" name="jLabel44">
                   <Properties>
@@ -1375,6 +1375,9 @@
                   </Properties>
                 </Component>
                 <Component class="javax.swing.JTextField" name="tfTanggalLahir">
+                  <Properties>
+                    <Property name="editable" type="boolean" value="false"/>
+                  </Properties>
                 </Component>
                 <Component class="javax.swing.JLabel" name="jLabel45">
                   <Properties>
@@ -1382,6 +1385,9 @@
                   </Properties>
                 </Component>
                 <Component class="javax.swing.JTextField" name="tfEmailMember2">
+                  <Properties>
+                    <Property name="editable" type="boolean" value="false"/>
+                  </Properties>
                 </Component>
                 <Component class="javax.swing.JLabel" name="jLabel43">
                   <Properties>
@@ -1397,6 +1403,7 @@
                   <SubComponents>
                     <Component class="javax.swing.JTextArea" name="taAlamat">
                       <Properties>
+                        <Property name="editable" type="boolean" value="false"/>
                         <Property name="columns" type="int" value="20"/>
                         <Property name="rows" type="int" value="5"/>
                       </Properties>
@@ -1409,6 +1416,9 @@
                   </Properties>
                 </Component>
                 <Component class="javax.swing.JTextField" name="tfNoTelp">
+                  <Properties>
+                    <Property name="editable" type="boolean" value="false"/>
+                  </Properties>
                 </Component>
                 <Component class="javax.swing.JLabel" name="jLabel46">
                   <Properties>
